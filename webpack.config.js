@@ -1,24 +1,32 @@
+const webpack = require('webpack')
+const config = require('config')
+
 const APP_DIR = `${__dirname}/src/client`
 const BUILD_DIR = `${__dirname}/public`
 
 module.exports = {
-  // the location of the main file to be transpiled
   entry: `${APP_DIR}/app.js`,
-  // the location and name of the file that will built by webpack containing all of the bundled
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      SD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrls.sd')),
+      HD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrls.hd')),
+      FIREBASE_API_KEY: JSON.stringify(config.get('firebase.apiKey')),
+      FIREBASE_AUTH_DOMAIN: JSON.stringify(config.get('firebase.authDomain')),
+      FIREBASE_DATABASE_URL: JSON.stringify(config.get('firebase.databaseUrl')),
+      FIREBASE_STORAGE_BUCKET: JSON.stringify(config.get('firebase.storageBucket'))
+    })
+  ],
   module: {
-    // loaders allow you to customise the bundling process somewhat
     loaders: [
-      // tell webpack to use babel to transpile ES6 files to ES5
       {
         test: /\.js/,
         include: APP_DIR,
         loader: 'babel-loader'
       },
-      // tells webpack to inject the CSS into the page in a script tag
       {
         test: /\.css$/,
         include: APP_DIR,

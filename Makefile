@@ -1,6 +1,6 @@
 BIN = ./node_modules/.bin
 
-.PHONY: bootstrap build start server
+.PHONY: bootstrap build start server deploy
 
 start: build server
 
@@ -8,7 +8,13 @@ server:
 	node index.js
 
 build:
-	NODE_ENV=development $(BIN)/webpack -p --progress --colors --watch
+	$(BIN)/webpack -p --progress --colors
+
+build-production:
+	NODE_ENV=production $(BIN)/webpack -p --progress --colors
 
 bootstrap:
-	yarn install
+	npm install
+
+deploy: build-production
+	gcloud app deploy

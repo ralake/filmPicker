@@ -1,0 +1,44 @@
+.Button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-blue-light);
+  border-radius: var(--border-radius);
+  text-align: center;
+  padding: 6px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: var(--spacing-s);
+  transition: background-color 0.2s ease;
+}
+
+.Button:hover {
+  background-color: var(--color-blue-medium);
+}
+
+.Button:active {
+  background-color: var(--color-blue-dark);
+}
+
+.Button--full {
+  display: block;
+  margin-left: 0;
+}
+
+.Button--small {
+  padding: var(--spacing-xs) 6px;
+  font-size: var(--font-size-s);
+}
+
+.Button--medium {
+  padding: 6px var(--spacing-l);
+}
+
+.Button--large {
+  font-size: var(--font-size-l);
+  padding: 6px 22px;
+}
+
+.Button.is-disabled {
+  background-color: var(--color-grey-medium);
+}

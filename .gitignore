@@ -1,2 +1,5 @@
-src/db-config.js
 node_modules
+public/bundle.js
+public/bundle.js.map
+app.yaml
+config/default.json

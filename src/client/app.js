@@ -1,43 +1,51 @@
-import React from 'react'
-import ReactDom from 'react-dom'
+import { render, h } from 'preact'
+import * as firebase from 'firebase'
+import _ from 'lodash'
 import createAtom from 'tiny-atom'
-
-import filmService from '../lib/film-service'
-
+import filmService from './lib/film-service'
+import userService from './lib/user-service'
+import evolve from './evolve'
 import FilmPicker from './components/film-picker'
+import * as constants from './constants'
+import dbConfig from '../db-config'
+import './app.css'
 
-import { defaultNewFilm } from './constants'
+let root
+
+firebase.initializeApp(dbConfig)
+
+const {
+  defaultFilterCriteria,
+  defaultFilm
+} = constants
 
 const initialState = {
-  films: [],
-  filmToBeAdded: defaultNewFilm
+  films: {
+    watchListFilms: {},
+    wishListFilms: {}
+  },
+  filmToBeAdded: defaultFilm,
+  filterCriteria: defaultFilterCriteria
 }
 
-const atom = createAtom(initialState, evolve, render)
-
-filmService.get(films => atom.split({ films: films }))
-
-function evolve (get, split, action) {
+const atom = createAtom(initialState, evolve, renderFilmPicker)
+userService.onLoginChange(appUser => {
+  const { get, split } = atom
   const state = get()
-  const { type, payload } = action
+  const loggedIn = _.get(appUser, 'isAnonymous') === false
+  const user = { loggedIn }
 
-  switch (type) {
-    case 'SHOW_ADD_FILM_MODAL':
-      split({ showAddFilmModal: payload })
-      break
-    case 'UPDATE_NEW_FILM_ATTRIBUTE':
-      const { key, value } = payload
-      split({ filmToBeAdded: Object.assign({}, state.filmToBeAdded, { [key]: value }) })
-      break
-    case 'ADD_NEW_FILM':
-      const { id, filmToBeAdded } = payload
-      split({ filmToBeAdded: defaultNewFilm })
-      filmService.add(id, filmToBeAdded)
-      break
+  split('updateUser', { user })
+
+  if (user.loggedIn) {
+    if (state.showLoginForm) split('showLoginForm', { show: false })
+    filmService.get(films => split('updateFilms', { films: (films || initialState.films) }))
+  } else {
+    split('updateFilms', { films: initialState.films })
+    split('showLoginForm', { show: true })
   }
-}
+})
 
-function render () {
-  console.log('currentState: ', atom.get())
-  ReactDom.render(<FilmPicker atom={atom.get()} split={atom.split} />, document.getElementById('FilmPicker'))
+function renderFilmPicker () {
+  root = render(<FilmPicker atom={atom.get()} split={atom.split} />, document.getElementById('FilmPicker'), root)
 }

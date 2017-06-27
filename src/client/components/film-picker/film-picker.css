@@ -1,0 +1,15 @@
+.FilmPicker {
+  padding: var(--spacing-l);
+}
+
+.FilmPicker-listWrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 1200px) {
+  .FilmPicker-listWrapper {
+    flex-direction: row;
+  }
+}

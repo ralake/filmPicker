@@ -1,0 +1,19 @@
+.AddFilmForm .Button {
+  margin-top: var(--spacing-l);
+}
+
+.AddFilmForm-input {
+  outline: none;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-blue-light);
+  width: 97%;
+  font-size: var(--font-size-l);
+  padding: var(--spacing-xs);
+  margin-bottom: var(--spacing-l);
+  font-weight: lighter;
+}
+
+.AddFilmForm-title {
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-l);
+}

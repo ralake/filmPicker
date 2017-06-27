@@ -1,0 +1,16 @@
+.PickFilmForm .Button {
+  margin-top: var(--spacing-l);
+}
+
+.PickFilmForm-submit {
+  background-color: #83beb6;
+  border-radius: var(--border-radius);
+  text-align: center;
+  padding: var(--spacing-s);
+  margin-top: var(--spacing-l);
+  color: #fff;
+}
+
+.PickFilmForm-criteria {
+  margin-bottom: var(--spacing-xl);
+}

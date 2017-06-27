@@ -1,0 +1,45 @@
+.Film {
+  list-style: none;
+  margin-bottom: var(--spacing-l);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-s);
+  background-color: #fff;
+}
+
+.Film-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Film-divider {
+  margin: var(--spacing-s) 0;
+  height: 1px;
+  background-color: var(--color-grey-light);
+}
+
+.Film-title {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.Film-dateAdded {
+  font-size: var(--font-size-s);
+  color: var(--color-blue-light);
+}
+
+.Film-descriptors {
+  font-style: italic;
+  font-weight: lighter;
+  font-size: var(--font-size-s);
+}
+
+.Film-descriptorsWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.Film-btnWrapper {
+  display: flex;
+  justify-content: space-between;
+}

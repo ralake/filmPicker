@@ -1,68 +1,75 @@
-import React from 'react'
+import { Component, h } from 'preact'
+import _ from 'lodash'
+import Toggle from '../toggle'
+import Button from '../button'
+import Modal from '../modal'
+import './add-film-form.css'
 
-class AddFilmForm extends React.Component {
+class AddFilmForm extends Component {
   render () {
-    const { isFiction, isDocumentary, isEnglishLanguage, isForeignLanguage } = this.props.atom.filmToBeAdded
+    const { atom } = this.context
+    const { dismissable } = this.props
+    const { showAddFilmForm, filmToBeAdded } = atom
+    const { isFiction, isEnglishLanguage, name } = filmToBeAdded
 
-    return (
-      <div className='AddFilmForm'>
-        <input className='AddFilmForm-name' type='text' onChange={this.updateFilmName.bind(this)} />
-        <label className='AddFilmForm-englishLanguageToggle'>
-          <input type='checkbox' checked={isEnglishLanguage} onChange={this.updateEnglishLanguageFilter.bind(this)} />
-          <div className='slider round' />
-        </label>
-        <label className='AddFilmForm-foreignLanguageToggle'>
-          <input type='checkbox' checked={isForeignLanguage} onChange={this.updateForeignLanguageFilter.bind(this)} />
-          <div className='slider round' />
-        </label>
-        <label className='AddFilmForm-documentaryToggle'>
-          <input type='checkbox' checked={isDocumentary} onChange={this.updateDocumentaryFilter.bind(this)} />
-          <div className='slider round' />
-        </label>
-        <label className='AddFilmForm-fictionToggle'>
-          <input type='checkbox' checked={isFiction} onChange={this.updateFictionFilter.bind(this)} />
-          <div className='slider round' />
-        </label>
-        <div className='AddFilmForm-submit' onClick={this.handleSubmit.bind(this)}>Submit</div>
-      </div>
-    )
+    if (showAddFilmForm) {
+      return (
+        <Modal atom={atom} dismissable={dismissable} handleClose={() => this.handleClose()}>
+          <div className='AddFilmForm'>
+            <p className='AddFilmForm-title'>Title</p>
+            <input
+              className='AddFilmForm-input'
+              type='text'
+              onChange={event => this.updateFilmName(event)}
+              onBlur={event => this.updateFilmName(event)}
+              value={name}
+            />
+            <Toggle toggled={!isEnglishLanguage} onChange={() => this.updateForeignLanguageAttribute()} descriptor='Foreign Language?' />
+            <Toggle toggled={!isFiction} onChange={() => this.updateDocumentaryAttribute()} descriptor='Documentary?' />
+            <Button
+              size='large'
+              onClick={() => this.handleSubmit()}
+              text='Submit'
+              fullWidth
+              disabled={!name}
+            />
+          </div>
+        </Modal>
+      )
+    } else {
+      return null
+    }
+  }
+
+  handleClose () {
+    const { split } = this.context
+    split('showAddFilmForm', { show: false })
   }
 
   handleSubmit () {
-    const { atom, split } = this.props
-    const { filmToBeAdded, films } = atom
-    const id = films.length
+    const { atom, split } = this.context
+    const { filmToBeAdded, listToAddFilmTo } = atom
 
-    split('ADD_NEW_FILM', { id, filmToBeAdded })
-    split('SHOW_ADD_FILM_MODAL', false)
+    split('addNewFilm', { film: _.assign({}, filmToBeAdded, { dateAdded: Date.now() }), list: listToAddFilmTo })
+    split('showAddFilmForm', { show: false })
   }
 
   updateFilmAttribute (key, value) {
-    this.props.split('UPDATE_NEW_FILM_ATTRIBUTE', { key, value })
+    this.context.split('updateNewFilmAttribute', { key, value })
   }
 
   updateFilmName (event) {
     this.updateFilmAttribute('name', event.target.value)
   }
 
-  updateEnglishLanguageFilter () {
-    const { isEnglishLanguage } = this.props.atom.filmToBeAdded
+  updateForeignLanguageAttribute () {
+    const { isEnglishLanguage } = this.context.atom.filmToBeAdded
     this.updateFilmAttribute('isEnglishLanguage', !isEnglishLanguage)
   }
 
-  updateForeignLanguageFilter () {
-    const { isForeignLanguage } = this.props.atom.filmToBeAdded
-    this.updateFilmAttribute('isForeignLanguage', !isForeignLanguage)
-  }
-
-  updateFictionFilter () {
-    const { isFiction } = this.props.atom.filmToBeAdded
+  updateDocumentaryAttribute () {
+    const { isFiction } = this.context.atom.filmToBeAdded
     this.updateFilmAttribute('isFiction', !isFiction)
-  }
-
-  updateDocumentaryFilter () {
-    const { isDocumentary } = this.props.atom.filmToBeAdded
-    this.updateFilmAttribute('isDocumentary', !isDocumentary)
   }
 }
 
