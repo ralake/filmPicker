@@ -1,0 +1,25 @@
+{
+  "name": "filmPicker",
+  "version": "1.0.0",
+  "description": "A film picker to aid my poor decision making",
+  "main": "index.js",
+  "repository": "https://github.com/ralake/filmPicker.git",
+  "author": "Richard Lake",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "express": "^4.15.3",
+    "firebase": "^4.1.3",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "style-loader": "^0.18.2",
+    "tiny-atom": "^0.4.0",
+    "webpack": "^3.0.0"
+  },
+  "devDependencies": {
+    "standard": "^10.0.2"
+  }
+}
