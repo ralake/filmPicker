@@ -6,23 +6,41 @@ import './film-form.css'
 /** @jsx h */
 
 class FilmForm extends Component {
+  componentDidMount () {
+    if (this.nameInput) this.nameInput.focus()
+  }
+
   render () {
     const { onSubmit, onClose, film, buttonText } = this.props
     const { name, isEnglishLanguage, isFiction } = film
 
     return (
-      <Modal dismissable handleClose={() => onClose()}>
+      <Modal
+        dismissable
+        handleClose={() => onClose()}
+      >
         <div className='FilmForm'>
           <p className='FilmForm-title'>Title</p>
           <input
+            ref={ref => {
+              if (ref) this.nameInput = ref
+            }}
             className='FilmForm-input'
             type='text'
             onChange={event => this.updateFilmName(event)}
             onBlur={event => this.updateFilmName(event)}
             value={name}
           />
-          <Toggle toggled={!isEnglishLanguage} onChange={() => this.updateForeignLanguageAttribute()} descriptor='Foreign Language?' />
-          <Toggle toggled={!isFiction} onChange={() => this.updateDocumentaryAttribute()} descriptor='Documentary?' />
+          <Toggle
+            toggled={!isEnglishLanguage}
+            onChange={() => this.updateForeignLanguageAttribute()}
+            descriptor='Foreign Language?'
+          />
+          <Toggle
+            toggled={!isFiction}
+            onChange={() => this.updateDocumentaryAttribute()}
+            descriptor='Documentary?'
+          />
           <Button
             size='large'
             onClick={() => onSubmit()}
