@@ -7,7 +7,6 @@ import './film.css'
 
 class Film extends Component {
   render () {
-    const fullWidth = false
     const { showMoveFilmButton, showDownloadButtons, film } = this.props
     const { name, isEnglishLanguage, isFiction, id, dateAdded } = film
     const language = isEnglishLanguage ? 'English language' : 'Foreign language'
@@ -25,9 +24,10 @@ class Film extends Component {
           </div>
           <div className='Film-btnWrapper'>
             { showMoveFilmButton && (
-              <Button size='small' onClick={() => { this.moveFilmToWatchList(id) }} text='Move' fullWidth={fullWidth} />
+              <Button size='small' onClick={() => { this.moveFilmToWatchList(id) }} text='Move' fullWidth={false} />
             )}
-            <Button size='small' onClick={() => this.deleteFilm(id)} text='Remove' fullWidth={fullWidth} />
+            <Button size='small' onClick={() => this.showEditFilmModal(film)} text='Edit' fullWidth={false} />
+            <Button size='small' onClick={() => this.deleteFilm(id)} text='Remove' fullWidth={false} />
           </div>
         </div>
         <div className='Film-divider' />
@@ -63,6 +63,10 @@ class Film extends Component {
 
   deleteFilm (id) {
     this.context.split('removeFilm', { id, list: this.props.parentList })
+  }
+
+  showEditFilmModal () {
+    // this.context.split('showEditFilmModal', { show: true })
   }
 
   moveFilmToWatchList (id) {

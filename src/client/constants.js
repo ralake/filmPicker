@@ -1,9 +1,3 @@
-export const defaultFilm = {
-  isFiction: true,
-  isEnglishLanguage: true,
-  name: ''
-}
-
 export const defaultFilterCriteria = {
   includeDocumentaries: true,
   includeForeignLanguageFilms: true

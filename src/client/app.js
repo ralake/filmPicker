@@ -15,17 +15,13 @@ let root
 
 firebase.initializeApp(dbConfig)
 
-const {
-  defaultFilterCriteria,
-  defaultFilm
-} = constants
+const { defaultFilterCriteria } = constants
 
 const initialState = {
   films: {
     watchListFilms: {},
     wishListFilms: {}
   },
-  filmToBeAdded: defaultFilm,
   filterCriteria: defaultFilterCriteria
 }
 

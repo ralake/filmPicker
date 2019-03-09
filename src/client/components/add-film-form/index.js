@@ -7,11 +7,22 @@ import './add-film-form.css'
 /** @jsx h */
 
 class AddFilmForm extends Component {
+  constructor () {
+    super()
+    this.state = {
+      film: {
+        isFiction: true,
+        isEnglishLanguage: true,
+        name: ''
+      }
+    }
+  }
+
   render () {
     const { atom } = this.context
     const { dismissable } = this.props
-    const { showAddFilmForm, filmToBeAdded } = atom
-    const { isFiction, isEnglishLanguage, name } = filmToBeAdded
+    const { showAddFilmForm } = atom
+    const { isFiction, isEnglishLanguage, name } = this.state.film
 
     if (showAddFilmForm) {
       return (
@@ -49,14 +60,21 @@ class AddFilmForm extends Component {
 
   handleSubmit () {
     const { atom, split } = this.context
-    const { filmToBeAdded, listToAddFilmTo } = atom
+    const { film } = this.state
+    const { listToAddFilmTo } = atom
 
-    split('addNewFilm', { film: _.assign({}, filmToBeAdded, { dateAdded: Date.now() }), list: listToAddFilmTo })
-    split('showAddFilmForm', { show: false })
+    split('addNewFilm', { film: _.assign({}, film, { dateAdded: Date.now() }), list: listToAddFilmTo })
+    this.handleClose()
   }
 
   updateFilmAttribute (key, value) {
-    this.context.split('updateNewFilmAttribute', { key, value })
+    const { film } = this.state
+    this.setState({
+      film: {
+        ...film,
+        [key]: value
+      }
+    })
   }
 
   updateFilmName (event) {
@@ -64,12 +82,12 @@ class AddFilmForm extends Component {
   }
 
   updateForeignLanguageAttribute () {
-    const { isEnglishLanguage } = this.context.atom.filmToBeAdded
+    const { isEnglishLanguage } = this.this.state.film
     this.updateFilmAttribute('isEnglishLanguage', !isEnglishLanguage)
   }
 
   updateDocumentaryAttribute () {
-    const { isFiction } = this.context.atom.filmToBeAdded
+    const { isFiction } = this.this.state.film
     this.updateFilmAttribute('isFiction', !isFiction)
   }
 }

@@ -2,15 +2,8 @@ import _ from 'lodash'
 import filmService from './lib/film-service'
 import userService from './lib/user-service'
 import {
-  defaultFilm,
   defaultFilterCriteria
 } from './constants'
-
-function updateNewFilmAttribute (get, split, action) {
-  const state = get()
-  const { payload } = action
-  split({ filmToBeAdded: _.assign({}, state.filmToBeAdded, { [payload.key]: payload.value }) })
-}
 
 function removeFilm (get, split, action) {
   const { payload } = action
@@ -29,17 +22,11 @@ function showAddFilmForm (get, split, action) {
     showAddFilmForm: payload.show,
     listToAddFilmTo: payload.list
   })
-
-  if (!payload.show) split('setDefaultFilm', { defaultFilm })
-}
-
-function setDefaultFilm (get, split, action) {
-  split({ filmToBeAdded: action.payload.defaultFilm })
 }
 
 function addNewFilm (get, split, action) {
   const { payload } = action
-  filmService.add(payload.film, payload.list).then(() => split('setDefaultFilm', { defaultFilm }))
+  filmService.add(payload.film, payload.list)
 }
 
 function showPickFilmForm (get, split, action) {
@@ -92,11 +79,9 @@ function updateUser (get, split, action) {
 }
 
 export default {
-  updateNewFilmAttribute,
   removeFilm,
   addNewFilm,
   updateFilms,
-  setDefaultFilm,
   showPickFilmForm,
   showAddFilmForm,
   updateFilterCriteria,
