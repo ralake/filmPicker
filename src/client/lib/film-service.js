@@ -8,7 +8,11 @@ function get (cb) {
 
 function add (film, list) {
   const filmToAdd = film.id ? film : _.assign({}, film, { id: shortId.generate() })
-  return firebase.database().ref(`films/${list}/${filmToAdd.id}`).set(filmToAdd)
+  return edit(filmToAdd, list)
+}
+
+function edit (film, list) {
+  return firebase.database().ref(`films/${list}/${film.id}`).set(film)
 }
 
 function remove (id, list) {
@@ -49,4 +53,4 @@ function move (id, fromList, toList) {
   })
 }
 
-export default { get, add, pick, move, remove }
+export default { get, add, edit, pick, move, remove }

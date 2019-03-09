@@ -5,12 +5,8 @@ import List from '../list'
 import ModalOverlay from '../modal-overlay'
 import PickFilmForm from '../pick-film-form'
 import AddFilmForm from '../add-film-form'
+import EditFilmForm from '../edit-film-form'
 import LoginForm from '../login-form'
-import {
-  ADD_FILM_FORM_DISMISSABLE,
-  PICK_FILM_FORM_DISMISSABLE,
-  LOGIN_FORM_DISMISSABLE
-} from '../../constants'
 import './film-picker.css'
 /** @jsx h */
 
@@ -20,9 +16,10 @@ const FilmPicker = ({ atom, split }) => {
       <div className='FilmPicker'>
         <Header />
         <ModalOverlay />
-        <AddFilmForm dismissable={ADD_FILM_FORM_DISMISSABLE} />
-        <PickFilmForm dismissable={PICK_FILM_FORM_DISMISSABLE} />
-        <LoginForm dismissable={LOGIN_FORM_DISMISSABLE} />
+        <AddFilmForm />
+        <EditFilmForm />
+        <PickFilmForm />
+        <LoginForm />
         <div className='FilmPicker-listWrapper'>
           <List title='Watch List' list='watchListFilms' />
           <List title='Wish List' list='wishListFilms' showMoveFilmButton showDownloadButtons />

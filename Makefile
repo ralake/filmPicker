@@ -6,7 +6,7 @@ start:
 	node index.js
 
 build:
-	$(BIN)/webpack -p --progress --colors --watch
+	NODE_ENV=development $(BIN)/webpack -p --progress --colors --watch
 
 build-production:
 	NODE_ENV=production $(BIN)/webpack -p --progress --colors

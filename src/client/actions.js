@@ -29,6 +29,24 @@ function addNewFilm (get, split, action) {
   filmService.add(payload.film, payload.list)
 }
 
+function editFilm (get, split, action) {
+  const { payload } = action
+  const { films } = get()
+  const list = _.keys(films).find(list => films[list][payload.film.id])
+
+  filmService.edit(payload.film, list)
+}
+
+function showEditFilmForm (get, split, action) {
+  const { payload } = action
+
+  split({
+    showModalOverlay: payload.show,
+    showEditFilmForm: payload.show,
+    filmToEdit: payload.film
+  })
+}
+
 function showPickFilmForm (get, split, action) {
   const { payload } = action
   split({
@@ -81,9 +99,11 @@ function updateUser (get, split, action) {
 export default {
   removeFilm,
   addNewFilm,
+  editFilm,
   updateFilms,
   showPickFilmForm,
   showAddFilmForm,
+  showEditFilmForm,
   updateFilterCriteria,
   pickFilm,
   moveFilm,

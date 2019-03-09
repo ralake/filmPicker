@@ -8,10 +8,10 @@ class LoginForm extends Component {
   render () {
     const fullWidth = true
     const { atom } = this.context
-    const { dismissable } = this.props
+
     if (!atom.user.loggedIn) {
       return (
-        <Modal atom={atom} dismissable={dismissable}>
+        <Modal atom={atom} dismissable={false}>
           <div className='LoginForm'>
             <p className='LoginForm-attr'>Email</p>
             <input className='LoginForm-input' type='text' onChange={event => this.updateAuthAttr(event, 'email')} />

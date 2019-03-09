@@ -1,32 +1,34 @@
 import { Component, h } from 'preact'
-import _ from 'lodash'
 import FilmForm from '../film-form'
 /** @jsx h */
 
-const defaultFilm = {
-  isFiction: true,
-  isEnglishLanguage: true,
-  name: ''
-}
-
-class AddFilmForm extends Component {
-  constructor () {
+class EditFilmForm extends Component {
+  constructor (props, context) {
     super()
+    const { filmToEdit } = context.atom
     this.state = {
-      film: defaultFilm
+      film: filmToEdit
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState, prevContext) {
+    const { filmToEdit } = this.context.atom
+
+    if (!this.state.film && filmToEdit) {
+      this.setState({ film: filmToEdit })
     }
   }
 
   render () {
     const { atom } = this.context
-    const { showAddFilmForm } = atom
+    const { showEditFilmForm } = atom
     const { film } = this.state
 
-    if (showAddFilmForm) {
+    if (showEditFilmForm && film) {
       return (
         <FilmForm
           film={film}
-          buttonText='Add'
+          buttonText='Save'
           onChange={film => this.handleChange(film)}
           onClose={() => this.handleClose()}
           onSubmit={() => this.handleSubmit()}
@@ -43,18 +45,17 @@ class AddFilmForm extends Component {
 
   handleClose () {
     const { split } = this.context
-    split('showAddFilmForm', { show: false })
-    this.setState({ film: defaultFilm })
+    split('showEditFilmForm', { show: false, film: null })
+    this.setState({ film: null })
   }
 
   handleSubmit () {
-    const { atom, split } = this.context
+    const { split } = this.context
     const { film } = this.state
-    const { listToAddFilmTo } = atom
 
-    split('addNewFilm', { film: _.assign({}, film, { dateAdded: Date.now() }), list: listToAddFilmTo })
+    split('editFilm', { film })
     this.handleClose()
   }
 }
 
-export default AddFilmForm
+export default EditFilmForm

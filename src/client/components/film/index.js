@@ -66,7 +66,8 @@ class Film extends Component {
   }
 
   showEditFilmModal () {
-    // this.context.split('showEditFilmModal', { show: true })
+    const { film } = this.props
+    this.context.split('showEditFilmForm', { show: true, film })
   }
 
   moveFilmToWatchList (id) {
