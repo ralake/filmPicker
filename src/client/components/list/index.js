@@ -19,7 +19,6 @@ class List extends Component {
             size='medium'
             onClick={() => this.launchAddFilmModal()}
             text='Add Film'
-            fullWidth={false}
           />
         </div>
         {this.renderFilmList()}

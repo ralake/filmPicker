@@ -18,13 +18,37 @@ class Header extends Component {
       <div className='Header'>
         <h1 className='Header-title'>Film Picker</h1>
         {pickedFilmNotification}
-        <Button size='large' onClick={() => this.launchPickFilmModal()} fullWidth={false} text='Pick Film' />
+        <div>
+          <Button
+            size='large'
+            onClick={() => this.exportFilms()}
+            text='Export films'
+          />
+          <Button
+            size='large'
+            onClick={() => this.launchPickFilmModal()}
+            text='Pick film'
+          />
+        </div>
       </div>
     )
   }
 
   launchPickFilmModal () {
     this.context.split('showPickFilmForm', { show: true })
+  }
+
+  exportFilms () {
+    const { films } = this.context.atom
+    const encodedFilms = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(films))}`
+    const downloadLink = document.createElement('a')
+
+    downloadLink.display = 'hidden'
+    downloadLink.setAttribute('href', `data:${encodedFilms}`)
+    downloadLink.setAttribute('download', 'filmPickerExport.json')
+    document.body.appendChild(downloadLink)
+    downloadLink.click()
+    document.body.removeChild(downloadLink)
   }
 }
 

@@ -6,7 +6,6 @@ import './login-form.css'
 
 class LoginForm extends Component {
   render () {
-    const fullWidth = true
     const { atom } = this.context
 
     if (!atom.user.loggedIn) {
@@ -17,7 +16,7 @@ class LoginForm extends Component {
             <input className='LoginForm-input' type='text' onChange={event => this.updateAuthAttr(event, 'email')} />
             <p className='LoginForm-attr'>Password</p>
             <input className='LoginForm-input' type='text' onChange={event => this.updateAuthAttr(event, 'password')} />
-            <Button size='large' onClick={() => this.handleSubmit()} text='Log In' fullWidth={fullWidth} />
+            <Button size='large' onClick={() => this.handleSubmit()} text='Log In' fullWidth />
           </div>
         </Modal>
       )

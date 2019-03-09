@@ -24,10 +24,10 @@ class Film extends Component {
           </div>
           <div className='Film-btnWrapper'>
             { showMoveFilmButton && (
-              <Button size='small' onClick={() => { this.moveFilmToWatchList(id) }} text='Move' fullWidth={false} />
+              <Button size='small' onClick={() => { this.moveFilmToWatchList(id) }} text='Move' />
             )}
-            <Button size='small' onClick={() => this.showEditFilmModal(film)} text='Edit' fullWidth={false} />
-            <Button size='small' onClick={() => this.deleteFilm(id)} text='Remove' fullWidth={false} />
+            <Button size='small' onClick={() => this.showEditFilmModal(film)} text='Edit' />
+            <Button size='small' onClick={() => this.deleteFilm(id)} text='Remove' />
           </div>
         </div>
         <div className='Film-divider' />
@@ -38,12 +38,11 @@ class Film extends Component {
               <Button
                 onClick={() => this.search({ hd: false })}
                 text='Download SD'
-                fullWidth={false}
                 size='small'
               />
               <Button
                 onClick={() => this.search({ hd: true })}
-                text='Download HD' fullWidth={false}
+                text='Download HD'
                 size='small'
               />
             </div>

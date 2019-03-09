@@ -36,14 +36,12 @@ class PickFilmForm extends Component {
                 size='medium'
                 onClick={() => this.handleSubmit('random')}
                 text='Pick random film'
-                fullWidth={false}
               />
               <Button
                 className='PickFilmForm-oldestButton'
                 size='medium'
                 onClick={() => this.handleSubmit('oldest')}
                 text='Pick oldest film'
-                fullWidth={false}
               />
             </div>
           </div>
