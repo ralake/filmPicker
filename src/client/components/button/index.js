@@ -3,12 +3,12 @@ import classNames from 'classnames'
 import './button.css'
 /** @jsx h */
 
-const Button = ({ onClick, text, fullWidth, size, disabled }) => {
-  const className = classNames('Button', `Button--${size}`, {
+const Button = ({ onClick, text, fullWidth, size, disabled, className }) => {
+  const classes = classNames('Button', `Button--${size}`, {
     'Button--full': fullWidth,
     'is-disabled': disabled
-  })
-  return <div className={className} onClick={!disabled && onClick}>{text}</div>
+  }, className)
+  return <div className={classes} onClick={!disabled && onClick}>{text}</div>
 }
 
 export default Button

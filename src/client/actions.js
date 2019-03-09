@@ -1,9 +1,6 @@
 import _ from 'lodash'
 import filmService from './lib/film-service'
 import userService from './lib/user-service'
-import {
-  defaultFilterCriteria
-} from './constants'
 
 function removeFilm (get, split, action) {
   const { payload } = action
@@ -53,19 +50,12 @@ function showPickFilmForm (get, split, action) {
     showModalOverlay: payload.show,
     showPickFilmForm: payload.show
   })
-
-  if (!payload.show) split({ filterCriteria: defaultFilterCriteria })
-}
-
-function updateFilterCriteria (get, split, action) {
-  const { payload } = action
-  const newFilterCriteria = _.assign({}, get().filterCriteria, { [payload.key]: payload.value })
-  split({ filterCriteria: newFilterCriteria })
 }
 
 function pickFilm (get, split, action) {
   const state = get()
-  const pickedFilm = filmService.pick(state.films.watchListFilms, state.filterCriteria)
+  const { payload } = action
+  const pickedFilm = filmService.pick(state.films.watchListFilms, payload.filterCriteria, payload.type)
   split({ pickedFilm })
 }
 
@@ -104,7 +94,6 @@ export default {
   showPickFilmForm,
   showAddFilmForm,
   showEditFilmForm,
-  updateFilterCriteria,
   pickFilm,
   moveFilm,
   showLoginForm,

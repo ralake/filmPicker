@@ -5,22 +5,47 @@ import Modal from '../modal'
 import './pick-film-form.css'
 /** @jsx h */
 
+const defaultFilterCriteria = {
+  includeDocumentaries: true,
+  includeForeignLanguageFilms: true
+}
+
 class PickFilmForm extends Component {
+  constructor () {
+    super()
+    this.state = {
+      filterCriteria: defaultFilterCriteria
+    }
+  }
+
   render () {
-    const fullWidth = true
     const { atom } = this.context
-    const { dismissable } = this.props
-    const { filterCriteria, showPickFilmForm } = atom
-    const { includeDocumentaries, includeForeignLanguageFilms } = filterCriteria
+    const { includeDocumentaries, includeForeignLanguageFilms } = this.state.filterCriteria
+    const { showPickFilmForm } = atom
 
     if (showPickFilmForm) {
       return (
-        <Modal atom={atom} dismissable={dismissable} handleClose={() => this.handleClose()}>
+        <Modal dismissable handleClose={() => this.handleClose()}>
           <div className='PickFilmForm'>
             <p className='PickFilmForm-criteria'>Criteria</p>
             <Toggle toggled={includeForeignLanguageFilms} onChange={() => this.updateForeignLanguageFilter()} descriptor='Include foreign language films?' />
             <Toggle toggled={includeDocumentaries} onChange={() => this.updateDocumentaryFilter()} descriptor='Include documentaries?' />
-            <Button size='medium' onClick={() => this.handleSubmit()} text='Pick Film' fullWidth={fullWidth} />
+            <div className='PickFilmForm-buttons'>
+              <Button
+                className='PickFilmForm-randomButton'
+                size='medium'
+                onClick={() => this.handleSubmit('random')}
+                text='Pick random film'
+                fullWidth={false}
+              />
+              <Button
+                className='PickFilmForm-oldestButton'
+                size='medium'
+                onClick={() => this.handleSubmit('oldest')}
+                text='Pick oldest film'
+                fullWidth={false}
+              />
+            </div>
           </div>
         </Modal>
       )
@@ -32,27 +57,35 @@ class PickFilmForm extends Component {
   handleClose () {
     const { split } = this.context
     split('showPickFilmForm', { show: false })
+    this.setState({ filterCriteria: defaultFilterCriteria })
   }
 
-  handleSubmit () {
-    const { atom, split } = this.context
-    const { filterCriteria } = atom
+  handleSubmit (type) {
+    const { split } = this.context
+    const { filterCriteria } = this.state
 
-    split('pickFilm', filterCriteria)
-    split('showPickFilmForm', { show: false })
+    split('pickFilm', { filterCriteria, type })
+    this.handleClose()
   }
 
   updateFilterCriteria (key, value) {
-    this.context.split('updateFilterCriteria', { key, value })
+    const { filterCriteria } = this.state
+
+    this.setState({
+      filterCriteria: {
+        ...filterCriteria,
+        [key]: value
+      }
+    })
   }
 
   updateForeignLanguageFilter () {
-    const { includeForeignLanguageFilms } = this.context.atom.filterCriteria
+    const { includeForeignLanguageFilms } = this.state.filterCriteria
     this.updateFilterCriteria('includeForeignLanguageFilms', !includeForeignLanguageFilms)
   }
 
   updateDocumentaryFilter () {
-    const { includeDocumentaries } = this.context.atom.filterCriteria
+    const { includeDocumentaries } = this.state.filterCriteria
     this.updateFilterCriteria('includeDocumentaries', !includeDocumentaries)
   }
 }

@@ -14,3 +14,16 @@
 .PickFilmForm-criteria {
   margin-bottom: var(--spacing-xl);
 }
+
+.PickFilmForm-buttons {
+  display: flex;
+}
+
+.PickFilmForm-randomButton,
+.PickFilmForm-oldestButton {
+  flex-grow: 1;
+}
+
+.PickFilmForm-randomButton {
+  margin-left: 0
+}

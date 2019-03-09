@@ -6,7 +6,6 @@ import filmService from './lib/film-service'
 import userService from './lib/user-service'
 import evolve from './evolve'
 import FilmPicker from './components/film-picker'
-import * as constants from './constants'
 import dbConfig from '../db-config'
 import './app.css'
 /** @jsx h */
@@ -15,14 +14,11 @@ let root
 
 firebase.initializeApp(dbConfig)
 
-const { defaultFilterCriteria } = constants
-
 const initialState = {
   films: {
     watchListFilms: {},
     wishListFilms: {}
-  },
-  filterCriteria: defaultFilterCriteria
+  }
 }
 
 const atom = createAtom(initialState, evolve, renderFilmPicker)

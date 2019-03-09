@@ -29,11 +29,14 @@ function filter (films, filterCriteria) {
   return filteredFilms
 }
 
-function pick (films, filterCriteria) {
+function pick (films, filterCriteria, type) {
   const filteredFilms = filter(films, filterCriteria)
   const randomFilmIndices = getRandomIndices(filteredFilms)
   const randomFilms = randomFilmIndices.map(index => filteredFilms[index])
-  return _.orderBy(randomFilms, ['dateAdded'], 'asc')[0]
+  const chosenFilms = type === 'random'
+    ? randomFilms
+    : filteredFilms
+  return _.first(_.orderBy(chosenFilms, ['dateAdded'], 'asc'))
 }
 
 function getRandomIndices (input, chosen = []) {
