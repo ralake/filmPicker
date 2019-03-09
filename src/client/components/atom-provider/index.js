@@ -1,4 +1,5 @@
 import { Component, h } from 'preact'
+/** @jsx h */
 
 class AtomProvider extends Component {
   getChildContext () {

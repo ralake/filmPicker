@@ -2,6 +2,7 @@ import { Component, h } from 'preact'
 import Button from '../button'
 import Modal from '../modal'
 import './login-form.css'
+/** @jsx h */
 
 class LoginForm extends Component {
   render () {

@@ -4,6 +4,7 @@ import Toggle from '../toggle'
 import Button from '../button'
 import Modal from '../modal'
 import './add-film-form.css'
+/** @jsx h */
 
 class AddFilmForm extends Component {
   render () {

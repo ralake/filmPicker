@@ -3,6 +3,7 @@ import Toggle from '../toggle'
 import Button from '../button'
 import Modal from '../modal'
 import './pick-film-form.css'
+/** @jsx h */
 
 class PickFilmForm extends Component {
   render () {

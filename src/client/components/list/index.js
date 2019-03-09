@@ -3,6 +3,7 @@ import _ from 'lodash'
 import Button from '../button'
 import Film from '../film'
 import './list.css'
+/** @jsx h */
 
 class List extends Component {
   render () {

@@ -1,6 +1,7 @@
 import { Component, h } from 'preact'
 import Button from '../button'
 import './header.css'
+/** @jsx h */
 
 class Header extends Component {
   render () {

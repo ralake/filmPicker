@@ -9,6 +9,7 @@ import FilmPicker from './components/film-picker'
 import * as constants from './constants'
 import dbConfig from '../db-config'
 import './app.css'
+/** @jsx h */
 
 let root
 

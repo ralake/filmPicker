@@ -1,5 +1,6 @@
 import { Component, h } from 'preact'
 import './modal.css'
+/** @jsx h */
 
 class Modal extends Component {
   render () {

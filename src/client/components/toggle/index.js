@@ -1,5 +1,6 @@
 import { Component, h } from 'preact'
 import './toggle.css'
+/** @jsx h */
 
 class Toggle extends Component {
   render () {

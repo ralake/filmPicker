@@ -3,6 +3,7 @@
 import { Component, h } from 'preact'
 import Button from '../button'
 import './film.css'
+/** @jsx h */
 
 class Film extends Component {
   render () {

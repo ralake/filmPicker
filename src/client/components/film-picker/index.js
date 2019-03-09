@@ -12,6 +12,7 @@ import {
   LOGIN_FORM_DISMISSABLE
 } from '../../constants'
 import './film-picker.css'
+/** @jsx h */
 
 const FilmPicker = ({ atom, split }) => {
   return (
