@@ -21,16 +21,25 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js/,
-        include: APP_DIR,
-        loader: 'babel-loader'
+        test: /\.m?js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env'
+            ],
+            plugins: [
+              ['@babel/plugin-transform-react-jsx', { pragma: 'h' }]
+            ]
+          }
+        }
       },
       {
         test: /\.css$/,
-        include: APP_DIR,
-        loader: 'style-loader!css-loader'
+        use: ['style-loader', 'css-loader']
       }
     ]
   }

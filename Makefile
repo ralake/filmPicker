@@ -1,14 +1,12 @@
 BIN = ./node_modules/.bin
 
-.PHONY: bootstrap build start server deploy
+.PHONY: bootstrap build start deploy
 
-start: build server
-
-server:
+start:
 	node index.js
 
 build:
-	$(BIN)/webpack -p --progress --colors
+	$(BIN)/webpack -p --progress --colors --watch
 
 build-production:
 	NODE_ENV=production $(BIN)/webpack -p --progress --colors
