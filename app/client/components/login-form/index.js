@@ -1,16 +1,24 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import _ from 'lodash'
+import { connect } from 'tiny-atom/react'
 import Button from '../button'
 import Modal from '../modal'
 import './login-form.css'
-/** @jsx h */
+
+function map (state) {
+  return {
+    user: state.user
+  }
+}
+
+const actions = ['submitLoginForm', 'updateLoginDetails']
 
 class LoginForm extends Component {
   render () {
-    const { atom } = this.context
-
-    if (!atom.user.loggedIn) {
+    const { user } = this.props
+    if (user && !user.loggedIn) {
       return (
-        <Modal atom={atom} dismissable={false}>
+        <Modal dismissable={false}>
           <div className='LoginForm'>
             <p className='LoginForm-attr'>Email</p>
             <input className='LoginForm-input' type='text' onChange={event => this.updateAuthAttr(event, 'email')} />
@@ -27,14 +35,13 @@ class LoginForm extends Component {
 
   updateAuthAttr (event, key) {
     const { value } = event.target
-    this.context.split('updateLoginDetails', { key, value })
+    this.props.updateLoginDetails({ key, value })
   }
 
   handleSubmit () {
-    const { atom, split } = this.context
-    const { email, password } = atom.user
-    split('submitLoginForm', { email, password })
+    const { email, password } = this.props.user
+    this.props.submitLoginForm({ email, password })
   }
 }
 
-export default LoginForm
+export default connect(map, actions)(LoginForm)

@@ -1,9 +1,9 @@
-import { h } from 'preact'
+import React from 'react'
+import { useAtom } from 'tiny-atom/react/hooks'
 import './modal-overlay.css'
-/** @jsx h */
 
-const ModalOverlay = (props, context) => {
-  const { showModalOverlay } = context.atom
+const ModalOverlay = (props) => {
+  const showModalOverlay = useAtom(state => state.showModalOverlay)
   if (showModalOverlay) {
     return <div className='ModalOverlay' />
   } else {

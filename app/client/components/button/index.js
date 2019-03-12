@@ -1,7 +1,6 @@
-import { h } from 'preact'
+import React from 'react'
 import classNames from 'classnames'
 import './button.css'
-/** @jsx h */
 
 const Button = ({ onClick, text, fullWidth, size, disabled, className }) => {
   const classes = classNames('Button', `Button--${size}`, {

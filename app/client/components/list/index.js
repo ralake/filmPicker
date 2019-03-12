@@ -1,15 +1,19 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import { connect } from 'tiny-atom/react'
 import _ from 'lodash'
 import Button from '../button'
 import Film from '../film'
 import './list.css'
-/** @jsx h */
+
+const map = () => {}
+
+const actions = ['showAddFilmForm']
 
 class List extends Component {
   render () {
-    const { atom } = this.context
-    const { title, list } = this.props
-    const filmCount = _.keys(atom.films[list]).length
+    const { films } = this.props
+    const { title } = this.props
+    const filmCount = films.length
 
     return (
       <div className='List'>
@@ -27,9 +31,8 @@ class List extends Component {
   }
 
   renderFilmList () {
-    const { atom } = this.context
-    const { list, showMoveFilmButton, showDownloadButtons } = this.props
-    const alphabeticallyOrderedFilms = _.sortBy(_.values(atom.films[list]), film => film.name)
+    const { films, list, showMoveFilmButton, showDownloadButtons } = this.props
+    const alphabeticallyOrderedFilms = _.sortBy(films, 'name')
     return (
       <ul className='List-wrapper'>{
         alphabeticallyOrderedFilms.map(film => (
@@ -45,8 +48,8 @@ class List extends Component {
   }
 
   launchAddFilmModal () {
-    this.context.split('showAddFilmForm', { show: true, list: this.props.list })
+    this.props.showAddFilmForm({ show: true, list: this.props.list })
   }
 }
 
-export default List
+export default connect(map, actions)(List)

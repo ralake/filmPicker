@@ -1,9 +1,13 @@
 /* globals SD_DOWNLOAD_URL, HD_DOWNLOAD_URL */
 
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import { connect } from 'tiny-atom/react'
 import Button from '../button'
 import './film.css'
-/** @jsx h */
+
+const map = () => {}
+
+const actions = ['removeFilm', 'showEditFilmForm', 'moveFilm']
 
 class Film extends Component {
   render () {
@@ -61,18 +65,17 @@ class Film extends Component {
   }
 
   deleteFilm (id) {
-    this.context.split('removeFilm', { id, list: this.props.parentList })
+    this.props.removeFilm({ id, list: this.props.parentList })
   }
 
   showEditFilmModal () {
     const { film } = this.props
-    this.context.split('showEditFilmForm', { show: true, film })
+    this.props.showEditFilmForm({ show: true, film })
   }
 
   moveFilmToWatchList (id) {
-    const { split } = this.context
     const { parentList } = this.props
-    split('moveFilm', {
+    this.props.moveFilm({
       id,
       fromList: parentList,
       toList: 'watchListFilms'
@@ -80,4 +83,4 @@ class Film extends Component {
   }
 }
 
-export default Film
+export default connect(map, actions)(Film)

@@ -1,9 +1,8 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
 import Toggle from '../toggle'
 import Button from '../button'
 import Modal from '../modal'
 import './film-form.css'
-/** @jsx h */
 
 class FilmForm extends Component {
   componentDidMount () {

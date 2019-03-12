@@ -1,18 +1,27 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import { connect } from 'tiny-atom/react'
 import FilmForm from '../film-form'
-/** @jsx h */
+
+function map (state) {
+  return {
+    filmToEdit: state.filmToEdit,
+    showEditFilmForm: state.showEditFilmForm
+  }
+}
+
+const actions = ['showEditFilmForm', 'editFilm']
 
 class EditFilmForm extends Component {
-  constructor (props, context) {
+  constructor (props) {
     super()
-    const { filmToEdit } = context.atom
+    const { filmToEdit } = props
     this.state = {
       film: filmToEdit
     }
   }
 
   componentDidUpdate (prevProps, prevState, prevContext) {
-    const { filmToEdit } = this.context.atom
+    const { filmToEdit } = this.props
 
     if (!this.state.film && filmToEdit) {
       this.setState({ film: filmToEdit })
@@ -20,8 +29,7 @@ class EditFilmForm extends Component {
   }
 
   render () {
-    const { atom } = this.context
-    const { showEditFilmForm } = atom
+    const { showEditFilmForm } = this.props
     const { film } = this.state
 
     if (showEditFilmForm && film) {
@@ -44,18 +52,16 @@ class EditFilmForm extends Component {
   }
 
   handleClose () {
-    const { split } = this.context
-    split('showEditFilmForm', { show: false, film: null })
+    this.props.showEditFilmForm({ show: false, film: null })
     this.setState({ film: null })
   }
 
   handleSubmit () {
-    const { split } = this.context
     const { film } = this.state
 
-    split('editFilm', { film })
+    this.props.editFilm({ film })
     this.handleClose()
   }
 }
 
-export default EditFilmForm
+export default connect(map, actions)(EditFilmForm)

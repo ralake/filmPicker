@@ -1,6 +1,5 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
 import './toggle.css'
-/** @jsx h */
 
 class Toggle extends Component {
   render () {

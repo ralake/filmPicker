@@ -1,11 +1,20 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import { connect } from 'tiny-atom/react'
 import Button from '../button'
 import './header.css'
-/** @jsx h */
+
+function map (state) {
+  return {
+    pickedFilm: state.pickedFilm,
+    films: state.films
+  }
+}
+
+const actions = ['showPickFilmForm']
 
 class Header extends Component {
   render () {
-    const { pickedFilm } = this.context.atom
+    const { pickedFilm } = this.props
     const notification = pickedFilm && (
       <p className='Header-pickedFilm'>
         <span>Time to watch </span>
@@ -35,11 +44,11 @@ class Header extends Component {
   }
 
   launchPickFilmModal () {
-    this.context.split('showPickFilmForm', { show: true })
+    this.props.showPickFilmForm({ show: true })
   }
 
   exportFilms () {
-    const { films } = this.context.atom
+    const { films } = this.props
     const encodedFilms = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(films))}`
     const downloadLink = document.createElement('a')
 
@@ -52,4 +61,4 @@ class Header extends Component {
   }
 }
 
-export default Header
+export default connect(map, actions)(Header)

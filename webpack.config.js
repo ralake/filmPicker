@@ -23,17 +23,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
-        exclude: /(node_modules)/,
+        test: /\.js/,
+        include: APP_DIR,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              '@babel/preset-env'
-            ],
-            plugins: [
-              ['@babel/plugin-transform-react-jsx', { pragma: 'h' }]
-            ]
+            presets: ['@babel/preset-env']
           }
         }
       },

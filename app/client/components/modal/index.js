@@ -1,6 +1,5 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
 import './modal.css'
-/** @jsx h */
 
 class Modal extends Component {
   render () {

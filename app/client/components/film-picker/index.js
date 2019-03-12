@@ -1,5 +1,8 @@
-import { h, Component } from 'preact'
-import AtomProvider from '../atom-provider'
+import React, { Component } from 'react'
+import _ from 'lodash'
+import { connect } from 'tiny-atom/react'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 import Header from '../header'
 import List from '../list'
 import ModalOverlay from '../modal-overlay'
@@ -8,35 +11,61 @@ import AddFilmForm from '../add-film-form'
 import EditFilmForm from '../edit-film-form'
 import LoginForm from '../login-form'
 import './film-picker.css'
-/** @jsx h */
+
+function map (state) {
+  return {
+    userLoggedIn: _.get(state.user, 'loggedIn')
+  }
+}
 
 class FilmPicker extends Component {
   render () {
-    const { atom, split } = this.props
-    const { loggedIn } = atom.user
+    const { userLoggedIn } = this.props
     return (
-      <AtomProvider atom={atom} split={split}>
-        <div className='FilmPicker'>
-          <Header />
-          <ModalOverlay />
-          <AddFilmForm />
-          <EditFilmForm />
-          <PickFilmForm />
-          <LoginForm />
-          {loggedIn && this.renderLists()}
-        </div>
-      </AtomProvider>
+      <div className='FilmPicker'>
+        <Header />
+        <ModalOverlay />
+        <AddFilmForm />
+        <EditFilmForm />
+        <PickFilmForm />
+        <LoginForm />
+        {userLoggedIn && this.renderLists()}
+      </div>
     )
   }
 
   renderLists () {
     return (
-      <div className='FilmPicker-listWrapper'>
-        <List title='Watch List' list='watchListFilms' />
-        <List title='Wish List' list='wishListFilms' showMoveFilmButton showDownloadButtons />
-      </div>
+      <Query
+        query={gql`
+        {
+          films {
+            id
+            name
+            dateAdded
+            isEnglishLanguage,
+            isFiction
+            parentList
+          }
+        }
+      `}
+      >
+        {({ loading, data, error }) => {
+          if (loading || error) return null
+
+          const wishListFilms = data.films.filter(film => film.parentList === 'WISH_LIST')
+          const watchListFilms = data.films.filter(film => film.parentList === 'WATCH_LIST')
+
+          return (
+            <div className='FilmPicker-listWrapper'>
+              <List title='Watch List' list='watchListFilms' films={watchListFilms} />
+              <List title='Wish List' list='wishListFilms' films={wishListFilms} showMoveFilmButton showDownloadButtons />
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 }
 
-export default FilmPicker
+export default connect(map)(FilmPicker)

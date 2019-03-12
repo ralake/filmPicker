@@ -1,14 +1,22 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import { connect } from 'tiny-atom/react'
 import Toggle from '../toggle'
 import Button from '../button'
 import Modal from '../modal'
 import './pick-film-form.css'
-/** @jsx h */
 
 const defaultFilterCriteria = {
   includeDocumentaries: true,
   includeForeignLanguageFilms: true
 }
+
+function map (state) {
+  return {
+    showPickFilmForm: state.showPickFilmForm
+  }
+}
+
+const actions = ['pickFilm']
 
 class PickFilmForm extends Component {
   constructor () {
@@ -19,9 +27,8 @@ class PickFilmForm extends Component {
   }
 
   render () {
-    const { atom } = this.context
     const { includeDocumentaries, includeForeignLanguageFilms } = this.state.filterCriteria
-    const { showPickFilmForm } = atom
+    const { showPickFilmForm } = this.props
 
     if (showPickFilmForm) {
       return (
@@ -53,16 +60,14 @@ class PickFilmForm extends Component {
   }
 
   handleClose () {
-    const { split } = this.context
-    split('showPickFilmForm', { show: false })
+    this.props.showPickFilmForm({ show: false })
     this.setState({ filterCriteria: defaultFilterCriteria })
   }
 
   handleSubmit (type) {
-    const { split } = this.context
     const { filterCriteria } = this.state
 
-    split('pickFilm', { filterCriteria, type })
+    this.props.pickFilm({ filterCriteria, type })
     this.handleClose()
   }
 
@@ -88,4 +93,4 @@ class PickFilmForm extends Component {
   }
 }
 
-export default PickFilmForm
+export default connect(map, actions)(PickFilmForm)

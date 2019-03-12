@@ -1,13 +1,22 @@
-import { Component, h } from 'preact'
+import React, { Component } from 'react'
+import { connect } from 'tiny-atom/react'
 import _ from 'lodash'
 import FilmForm from '../film-form'
-/** @jsx h */
 
 const defaultFilm = {
   isFiction: true,
   isEnglishLanguage: true,
   name: ''
 }
+
+function map (state) {
+  return {
+    showAddFilmForm: state.showAddFilmForm,
+    listToAddFilmTo: state.listToAddFilmTo
+  }
+}
+
+const actions = ['addNewFilm']
 
 class AddFilmForm extends Component {
   constructor () {
@@ -18,8 +27,7 @@ class AddFilmForm extends Component {
   }
 
   render () {
-    const { atom } = this.context
-    const { showAddFilmForm } = atom
+    const { showAddFilmForm } = this.props
     const { film } = this.state
 
     if (showAddFilmForm) {
@@ -42,19 +50,17 @@ class AddFilmForm extends Component {
   }
 
   handleClose () {
-    const { split } = this.context
-    split('showAddFilmForm', { show: false })
+    this.props.showAddFilmForm({ show: false })
     this.setState({ film: defaultFilm })
   }
 
   handleSubmit () {
-    const { atom, split } = this.context
     const { film } = this.state
-    const { listToAddFilmTo } = atom
+    const { listToAddFilmTo, addNewFilm } = this.props
 
-    split('addNewFilm', { film: _.assign({}, film, { dateAdded: Date.now() }), list: listToAddFilmTo })
+    addNewFilm({ film: _.assign({}, film, { dateAdded: Date.now() }), list: listToAddFilmTo })
     this.handleClose()
   }
 }
 
-export default AddFilmForm
+export default connect(map, actions)(AddFilmForm)
