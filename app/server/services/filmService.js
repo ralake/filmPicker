@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const firebase = require('firebase')
 const shortId = require('shortid')
 
@@ -12,23 +13,21 @@ firebase.initializeApp(firebaseCredentials)
 
 module.exports = { get, create, update, delete: deleteFilm }
 
-async function get (list) {
-  const films = await firebase.database().ref(`films/${list}`).once('value')
-  return films
+async function get () {
+  const films = await firebase.database().ref('films').once('value')
+  return _.values(films.val())
 }
 
-async function create (list, filmToCreate) {
-  const id = shortId.generate()
-  const dateAdded = new Date().getTime()
+async function create (input) {
   const film = {
-    ...filmToCreate,
-    id,
-    dateAdded
+    ...input,
+    id: shortId.generate(),
+    dateAdded: new Date().toDateString()
   }
 
   await firebase
     .database()
-    .ref(`films/${list}/${id}`)
+    .ref(`films/${film.id}`)
     .set(film)
 
   return film
@@ -37,7 +36,7 @@ async function create (list, filmToCreate) {
 async function update (list, filmId, updatedFilm) {
   await firebase
     .database()
-    .ref(`films/${list}/${filmId}`)
+    .ref(`films/${filmId}`)
     .set(updatedFilm)
 
   return updatedFilm
@@ -46,6 +45,6 @@ async function update (list, filmId, updatedFilm) {
 async function deleteFilm (list, filmId) {
   await firebase
     .database()
-    .ref(`films/${list}/${filmId}`)
+    .ref(`films/${filmId}`)
     .remove()
 }

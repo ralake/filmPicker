@@ -1,0 +1,28 @@
+enum LIST {
+  WISH_LIST
+  WATCH_LIST
+}
+
+type Film {
+  name: String!
+  id: ID!
+  dateAdded: String!
+  isFiction: Boolean!
+  isEnglishLanguage: Boolean!
+  parentList: LIST!
+}
+
+input createFilmInput {
+  name: String!
+  isFiction: Boolean!
+  isEnglishLanguage: Boolean!
+  parentList: LIST!
+}
+
+type Query {
+  films: [Film!]!
+}
+
+type Mutation {
+  createFilm(input: createFilmInput): Film!
+}
