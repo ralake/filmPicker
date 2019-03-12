@@ -1,14 +1,6 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const http = require('http')
-const createRoutes = require('./routes')
+const createApp = require('./server/createApp')
+const port = process.env.PORT || 3000
 
-const app = express()
-const PORT = process.env.PORT || 5000
-const server = http.createServer(app)
+const app = createApp()
 
-app.use(express.static('public'))
-app.use(bodyParser.json())
-app.use(createRoutes())
-
-server.listen(PORT, () => console.log(`listening on port: ${PORT}`))
+app.start(port)

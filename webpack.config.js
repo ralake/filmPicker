@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const config = require('config')
 
-const APP_DIR = `${__dirname}/client`
+const APP_DIR = `${__dirname}/app/client`
 const BUILD_DIR = `${__dirname}/public`
 
 module.exports = {
