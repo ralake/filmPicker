@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const config = require('config')
 
-const APP_DIR = `${__dirname}/src/client`
+const APP_DIR = `${__dirname}/client`
 const BUILD_DIR = `${__dirname}/public`
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
       HD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrls.hd')),
       FIREBASE_API_KEY: JSON.stringify(config.get('firebase.apiKey')),
       FIREBASE_AUTH_DOMAIN: JSON.stringify(config.get('firebase.authDomain')),
-      FIREBASE_DATABASE_URL: JSON.stringify(config.get('firebase.databaseUrl')),
+      FIREBASE_DATABASE_URL: JSON.stringify(config.get('firebase.databaseURL')),
       FIREBASE_STORAGE_BUCKET: JSON.stringify(config.get('firebase.storageBucket'))
     })
   ],

@@ -3,7 +3,7 @@ BIN = ./node_modules/.bin
 .PHONY: bootstrap build start deploy
 
 start:
-	node index.js
+	nodemon app
 
 build:
 	NODE_ENV=development $(BIN)/webpack -p --progress --colors --watch

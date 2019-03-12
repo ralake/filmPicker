@@ -2,11 +2,11 @@ import { render, h } from 'preact'
 import * as firebase from 'firebase'
 import _ from 'lodash'
 import createAtom from 'tiny-atom'
-import filmService from './lib/film-service'
 import userService from './lib/user-service'
+import filmService from './lib/film-service'
 import evolve from './evolve'
 import FilmPicker from './components/film-picker'
-import dbConfig from '../db-config'
+import dbConfig from './db-config'
 import './app.css'
 /** @jsx h */
 
@@ -22,20 +22,17 @@ const initialState = {
 }
 
 const atom = createAtom(initialState, evolve, renderFilmPicker)
+
 userService.onLoginChange(appUser => {
-  const { get, split } = atom
-  const state = get()
+  const { split } = atom
   const loggedIn = _.get(appUser, 'isAnonymous') === false
   const user = { loggedIn }
 
   split('updateUser', { user })
+  split('showLoginForm', { show: !user.loggedIn })
 
   if (user.loggedIn) {
-    if (state.showLoginForm) split('showLoginForm', { show: false })
     filmService.get(films => split('updateFilms', { films: (films || initialState.films) }))
-  } else {
-    split('updateFilms', { films: initialState.films })
-    split('showLoginForm', { show: true })
   }
 })
 
