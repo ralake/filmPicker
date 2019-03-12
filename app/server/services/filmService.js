@@ -33,18 +33,28 @@ async function create (input) {
   return film
 }
 
-async function update (list, filmId, updatedFilm) {
+async function update (id, updates) {
+  const film = await firebase.database().ref(`films/${id}`).once('value')
+  const updatedFilm = {
+    ...film.val(),
+    ...updates
+  }
   await firebase
     .database()
-    .ref(`films/${filmId}`)
+    .ref(`films/${id}`)
     .set(updatedFilm)
 
   return updatedFilm
 }
 
-async function deleteFilm (list, filmId) {
+async function deleteFilm (id) {
+  const film = await firebase.database().ref(`films/${id}`).once('value')
+  const deletedFilm = film.val()
+
   await firebase
     .database()
-    .ref(`films/${filmId}`)
+    .ref(`films/${id}`)
     .remove()
+
+  return deletedFilm
 }

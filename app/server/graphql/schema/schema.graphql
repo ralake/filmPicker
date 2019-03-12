@@ -12,11 +12,19 @@ type Film {
   parentList: LIST!
 }
 
-input createFilmInput {
+input CreateFilmInput {
   name: String!
   isFiction: Boolean!
   isEnglishLanguage: Boolean!
   parentList: LIST!
+}
+
+input UpdateFilmInput {
+  name: String
+  dateAdded: String
+  isFiction: Boolean
+  isEnglishLanguage: Boolean
+  parentList: LIST
 }
 
 type Query {
@@ -24,5 +32,7 @@ type Query {
 }
 
 type Mutation {
-  createFilm(input: createFilmInput): Film!
+  createFilm(input: CreateFilmInput): Film!
+  updateFilm(id: ID!, input: UpdateFilmInput): Film!
+  deleteFilm(id: ID!): Film!
 }
