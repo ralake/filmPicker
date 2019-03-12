@@ -25,31 +25,23 @@ async function create (input) {
     dateAdded: new Date().toDateString()
   }
 
-  await firebase
-    .database()
-    .ref(`films/${film.id}`)
-    .set(film)
-
+  await setFilmById(film.id, film)
   return film
 }
 
 async function update (id, updates) {
-  const film = await firebase.database().ref(`films/${id}`).once('value')
+  const film = await getFilmById(id)
   const updatedFilm = {
-    ...film.val(),
+    ...film,
     ...updates
   }
-  await firebase
-    .database()
-    .ref(`films/${id}`)
-    .set(updatedFilm)
 
+  await setFilmById(id, updatedFilm)
   return updatedFilm
 }
 
 async function deleteFilm (id) {
-  const film = await firebase.database().ref(`films/${id}`).once('value')
-  const deletedFilm = film.val()
+  const deletedFilm = await getFilmById(id)
 
   await firebase
     .database()
@@ -57,4 +49,19 @@ async function deleteFilm (id) {
     .remove()
 
   return deletedFilm
+}
+
+async function getFilmById (id) {
+  const film = await firebase
+    .database()
+    .ref(`films/${id}`)
+    .once('value')
+  return film.val()
+}
+
+async function setFilmById (id, film) {
+  return firebase
+    .database()
+    .ref(`films/${id}`)
+    .set(film)
 }
