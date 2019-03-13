@@ -11,19 +11,16 @@ const defaultFilm = {
   name: ''
 }
 
-function map (state) {
-  return {
-    listToAddFilmTo: state.listToAddFilmTo
-  }
-}
-
 const actions = ['closeModal']
 
-class AddFilmForm extends Component {
-  constructor () {
+class CreateFilmForm extends Component {
+  constructor (props) {
     super()
     this.state = {
-      film: defaultFilm
+      film: {
+        ...defaultFilm,
+        parentList: props.list
+      }
     }
   }
 
@@ -74,17 +71,13 @@ class AddFilmForm extends Component {
 
   handleSubmit (createFilm) {
     const { film } = this.state
-    const { listToAddFilmTo } = this.props
 
     createFilm({
       variables: {
-        input: {
-          ...film,
-          parentList: listToAddFilmTo
-        }
+        input: film
       }
     })
   }
 }
 
-export default connect(map, actions)(AddFilmForm)
+export default connect(null, actions)(CreateFilmForm)

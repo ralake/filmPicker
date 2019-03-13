@@ -21,7 +21,7 @@ class List extends Component {
           <h1 className='List-title'>{title} <span className='List-count'>({filmCount} films)</span></h1>
           <Button
             size='medium'
-            onClick={() => this.launchAddFilmModal()}
+            onClick={() => this.openCreateFilmModal()}
             text='Add Film'
           />
         </div>
@@ -47,9 +47,9 @@ class List extends Component {
     )
   }
 
-  launchAddFilmModal () {
+  openCreateFilmModal () {
     const { openModal, list } = this.props
-    openModal({ type: 'createFilmForm', data: { listToAddFilmTo: list } })
+    openModal({ type: 'createFilmForm', data: { list } })
   }
 }
 

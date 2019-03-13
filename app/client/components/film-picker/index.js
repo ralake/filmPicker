@@ -6,7 +6,7 @@ import Header from '../header'
 import List from '../list'
 import ModalOverlay from '../modal-overlay'
 import PickFilmForm from '../pick-film-form'
-import AddFilmForm from '../add-film-form'
+import CreateFilmForm from '../create-film-form'
 import UpdateFilmForm from '../update-film-form'
 import LoginForm from '../login-form'
 import FilmsQuery from '../../graphql/FilmsQuery.graphql'
@@ -54,7 +54,7 @@ class FilmPicker extends Component {
   renderModal (modal, films) {
     const { type, data } = modal
     const modals = {
-      createFilmForm: data => <AddFilmForm />,
+      createFilmForm: data => <CreateFilmForm list={data.list} />,
       updateFilmForm: data => <UpdateFilmForm film={films.find(film => film.id === data.id)} />,
       pickFilmForm: data => <PickFilmForm />,
       loginForm: data => <LoginForm />
