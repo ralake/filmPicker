@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
-import _ from 'lodash'
 import { Mutation } from 'react-apollo'
 import Button from '../button'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
+import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
 import FilmsQuery from '../../graphql/FilmsQuery.graphql'
 import './film.css'
 
@@ -16,7 +16,7 @@ const actions = ['removeFilm', 'showEditFilmForm', 'moveFilm']
 class Film extends Component {
   render () {
     const { showMoveFilmButton, showDownloadButtons, film } = this.props
-    const { name, isEnglishLanguage, isFiction, id, dateAdded } = film
+    const { name, isEnglishLanguage, isFiction, dateAdded } = film
     const language = isEnglishLanguage ? 'English language' : 'Foreign language'
     const type = isFiction ? 'fiction' : 'documentary'
     const date = dateAdded || '(not known)'
@@ -34,9 +34,6 @@ class Film extends Component {
             { showMoveFilmButton && (
               <Mutation
                 mutation={UpdateFilmMutation}
-                update={(cache, { data: { updateFilm: movedFilm } }) => {
-                  this.handleMovedFilm(cache, movedFilm)
-                }}
               >
                 {(updateFilm, { data, loading, error }) => (
                   <Button size='small' onClick={() => this.moveFilm(updateFilm)} text='Move' />
@@ -44,7 +41,16 @@ class Film extends Component {
               </Mutation>
             )}
             <Button size='small' onClick={() => this.showEditFilmModal(film)} text='Edit' />
-            <Button size='small' onClick={() => this.deleteFilm(id)} text='Remove' />
+            <Mutation
+              mutation={DeleteFilmMutation}
+              update={(cache, { data: { deleteFilm: deletedFilm } }) => {
+                this.handleDeletedFilm(cache, deletedFilm.id)
+              }}
+            >
+              {(deleteFilm, { data, loading, error }) => (
+                <Button size='small' onClick={() => this.deleteFilm(deleteFilm)} text='Remove' />
+              )}
+            </Mutation>
           </div>
         </div>
         <div className='Film-divider' />
@@ -77,30 +83,6 @@ class Film extends Component {
     window.open(url, '_blank')
   }
 
-  handleMovedFilm (cache, movedFilm) {
-    const { films } = cache.readQuery({ query: FilmsQuery })
-    const updatedFilmIndex = _.findIndex(films, movedFilm)
-    cache.writeQuery({
-      query: FilmsQuery,
-      data: {
-        films: [
-          ...films.slice(0, updatedFilmIndex),
-          movedFilm,
-          ...films.slice(updatedFilmIndex + 1)
-        ]
-      }
-    })
-  }
-
-  deleteFilm (id) {
-    this.props.removeFilm({ id, list: this.props.parentList })
-  }
-
-  showEditFilmModal () {
-    const { film } = this.props
-    this.props.showEditFilmForm({ show: true, id: film.id })
-  }
-
   moveFilm (updateFilm) {
     const { film } = this.props
     updateFilm({
@@ -109,6 +91,30 @@ class Film extends Component {
         input: { parentList: 'WATCH_LIST' }
       }
     })
+  }
+
+  deleteFilm (deleteFilm) {
+    const { id } = this.props.film
+    deleteFilm({
+      variables: {
+        id
+      }
+    })
+  }
+
+  handleDeletedFilm (cache, deletedFilmId) {
+    const { films } = cache.readQuery({ query: FilmsQuery })
+    cache.writeQuery({
+      query: FilmsQuery,
+      data: {
+        films: films.filter(f => f.id !== deletedFilmId)
+      }
+    })
+  }
+
+  showEditFilmModal () {
+    const { film } = this.props
+    this.props.showEditFilmForm({ show: true, id: film.id })
   }
 }
 

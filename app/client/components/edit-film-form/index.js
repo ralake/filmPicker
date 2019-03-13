@@ -4,7 +4,6 @@ import { connect } from 'tiny-atom/react'
 import { Mutation } from 'react-apollo'
 import FilmForm from '../film-form'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
-import FilmsQuery from '../../graphql/FilmsQuery.graphql'
 
 function map (state) {
   return {
@@ -36,9 +35,6 @@ class EditFilmForm extends Component {
       return (
         <Mutation
           mutation={UpdateFilmMutation}
-          update={(cache, { data: { updateFilm: updatedFilm } }) => {
-            this.handleUpdatedFilm(cache, updatedFilm)
-          }}
           onCompleted={() => this.handleClose()}
         >
           {(updateFilm, { data, loading, error }) => {
@@ -58,21 +54,6 @@ class EditFilmForm extends Component {
     } else {
       return null
     }
-  }
-
-  handleUpdatedFilm (cache, updatedFilm) {
-    const { films } = cache.readQuery({ query: FilmsQuery })
-    const updatedFilmIndex = _.findIndex(films, updatedFilm)
-    cache.writeQuery({
-      query: FilmsQuery,
-      data: {
-        films: [
-          ...films.slice(0, updatedFilmIndex),
-          updatedFilm,
-          ...films.slice(updatedFilmIndex + 1)
-        ]
-      }
-    })
   }
 
   handleChange (unsavedFilm) {
