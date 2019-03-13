@@ -7,7 +7,7 @@ import List from '../list'
 import ModalOverlay from '../modal-overlay'
 import PickFilmForm from '../pick-film-form'
 import AddFilmForm from '../add-film-form'
-import EditFilmForm from '../edit-film-form'
+import UpdateFilmForm from '../update-film-form'
 import LoginForm from '../login-form'
 import FilmsQuery from '../../graphql/FilmsQuery.graphql'
 import './film-picker.css'
@@ -55,7 +55,7 @@ class FilmPicker extends Component {
     const { type, data } = modal
     const modals = {
       createFilmForm: data => <AddFilmForm />,
-      updateFilmForm: data => <EditFilmForm film={films.find(film => film.id === data.id)} />,
+      updateFilmForm: data => <UpdateFilmForm film={films.find(film => film.id === data.id)} />,
       pickFilmForm: data => <PickFilmForm />,
       loginForm: data => <LoginForm />
     }

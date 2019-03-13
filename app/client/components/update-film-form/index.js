@@ -5,15 +5,9 @@ import { Mutation } from 'react-apollo'
 import FilmForm from '../film-form'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
 
-function map (state) {
-  return {
-    filmToEdit: state.filmToEdit
-  }
-}
-
 const actions = ['closeModal']
 
-class EditFilmForm extends Component {
+class UpdateFilmForm extends Component {
   constructor (props) {
     super()
     this.state = {
@@ -82,4 +76,4 @@ class EditFilmForm extends Component {
   }
 }
 
-export default connect(map, actions)(EditFilmForm)
+export default connect(null, actions)(UpdateFilmForm)
