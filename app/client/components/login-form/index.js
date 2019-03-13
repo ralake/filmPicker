@@ -11,7 +11,7 @@ function map (state) {
   }
 }
 
-const actions = ['submitLoginForm', 'updateLoginDetails']
+const actions = ['submitLoginForm', 'updateUser']
 
 class LoginForm extends Component {
   render () {
@@ -35,7 +35,7 @@ class LoginForm extends Component {
 
   updateAuthAttr (event, key) {
     const { value } = event.target
-    this.props.updateLoginDetails({ key, value })
+    this.props.updateUser({ [key]: value })
   }
 
   handleSubmit () {

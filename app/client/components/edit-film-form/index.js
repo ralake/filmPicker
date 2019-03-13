@@ -12,7 +12,7 @@ function map (state) {
   }
 }
 
-const actions = ['showEditFilmForm', 'editFilm']
+const actions = ['showEditFilmForm']
 
 class EditFilmForm extends Component {
   constructor (props) {

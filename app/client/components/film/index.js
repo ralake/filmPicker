@@ -11,7 +11,7 @@ import './film.css'
 
 const map = () => {}
 
-const actions = ['removeFilm', 'showEditFilmForm', 'moveFilm']
+const actions = ['showEditFilmForm']
 
 class Film extends Component {
   render () {

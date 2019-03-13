@@ -22,7 +22,7 @@ userService.onLoginChange(appUser => {
   const loggedIn = _.get(appUser, 'isAnonymous') === false
   const user = { loggedIn }
 
-  dispatch('updateUser', { user })
+  dispatch('updateUser', user)
   dispatch('showLoginForm', { show: !user.loggedIn })
 })
 
