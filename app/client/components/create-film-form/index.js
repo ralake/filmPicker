@@ -5,12 +5,6 @@ import FilmForm from '../film-form'
 import CreateFilmMutation from '../../graphql/CreateFilmMutation.graphql'
 import FilmsQuery from '../../graphql/FilmsQuery.graphql'
 
-const defaultFilm = {
-  isFiction: true,
-  isEnglishLanguage: true,
-  name: ''
-}
-
 const actions = ['closeModal']
 
 class CreateFilmForm extends Component {
@@ -18,7 +12,7 @@ class CreateFilmForm extends Component {
     super()
     this.state = {
       film: {
-        ...defaultFilm,
+        ...this.getDefaultNewFilm(),
         parentList: props.list
       }
     }
@@ -60,13 +54,21 @@ class CreateFilmForm extends Component {
     })
   }
 
+  getDefaultNewFilm () {
+    return {
+      isFiction: true,
+      isEnglishLanguage: true,
+      name: ''
+    }
+  }
+
   handleChange (film) {
     this.setState({ film })
   }
 
   handleClose () {
     this.props.closeModal()
-    this.setState({ film: defaultFilm })
+    this.setState({ film: this.getDefaultNewFilm() })
   }
 
   handleSubmit (createFilm) {
