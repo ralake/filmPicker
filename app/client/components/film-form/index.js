@@ -10,7 +10,7 @@ class FilmForm extends Component {
   }
 
   render () {
-    const { onSubmit, onClose, film, buttonText } = this.props
+    const { onSubmit, onClose, film, buttonText, buttonDisabled } = this.props
     const { name, isEnglishLanguage, isFiction } = film
 
     return (
@@ -45,7 +45,7 @@ class FilmForm extends Component {
             onClick={() => onSubmit()}
             text={buttonText}
             fullWidth
-            disabled={!name}
+            disabled={buttonDisabled || !name}
           />
         </div>
       </Modal>

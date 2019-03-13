@@ -1,0 +1,10 @@
+mutation UpdateFilm ($id: ID!, $input: UpdateFilmInput!) {
+  updateFilm (id: $id, input: $input) {
+    id
+    name
+    dateAdded
+    isEnglishLanguage
+    isFiction
+    parentList
+  }
+}

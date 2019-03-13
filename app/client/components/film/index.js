@@ -70,7 +70,7 @@ class Film extends Component {
 
   showEditFilmModal () {
     const { film } = this.props
-    this.props.showEditFilmForm({ show: true, film })
+    this.props.showEditFilmForm({ show: true, id: film.id })
   }
 
   moveFilmToWatchList (id) {

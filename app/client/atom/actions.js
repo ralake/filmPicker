@@ -29,7 +29,7 @@ function showEditFilmForm ({ get, set }, payload) {
   set({
     showModalOverlay: payload.show,
     editFilmFormShowing: payload.show,
-    filmToEdit: payload.film
+    filmToEdit: payload.id
   })
 }
 

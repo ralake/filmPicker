@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 import { connect } from 'tiny-atom/react'
 import { Query } from 'react-apollo'
@@ -14,7 +14,8 @@ import './film-picker.css'
 
 function map (state) {
   return {
-    userLoggedIn: _.get(state.user, 'loggedIn')
+    userLoggedIn: _.get(state.user, 'loggedIn'),
+    filmToEdit: state.filmToEdit
   }
 }
 
@@ -23,33 +24,43 @@ class FilmPicker extends Component {
     const { userLoggedIn } = this.props
     return (
       <div className='FilmPicker'>
-        <Header />
         <ModalOverlay />
-        <AddFilmForm />
-        <EditFilmForm />
-        <PickFilmForm />
-        <LoginForm />
-        {userLoggedIn && this.renderLists()}
+        {userLoggedIn
+          ? this.renderFIlmPicker()
+          : this.renderLoginForm()
+        }
       </div>
     )
   }
 
-  renderLists () {
+  renderLoginForm () {
+    return <LoginForm />
+  }
+
+  renderFIlmPicker () {
+    const { filmToEdit } = this.props
     return (
       <Query
         query={FilmsQuery}
       >
         {({ loading, data, error }) => {
           if (loading || error) return null
+          const { films } = data
 
-          const wishListFilms = data.films.filter(film => film.parentList === 'WISH_LIST')
-          const watchListFilms = data.films.filter(film => film.parentList === 'WATCH_LIST')
+          const wishListFilms = films.filter(film => film.parentList === 'WISH_LIST')
+          const watchListFilms = films.filter(film => film.parentList === 'WATCH_LIST')
 
           return (
-            <div className='FilmPicker-listWrapper'>
-              <List title='Watch List' list='WATCH_LIST' films={watchListFilms} />
-              <List title='Wish List' list='WISH_LIST' films={wishListFilms} showMoveFilmButton showDownloadButtons />
-            </div>
+            <Fragment>
+              <AddFilmForm />
+              <EditFilmForm film={films.find(film => film.id === filmToEdit)} />
+              <PickFilmForm />
+              <Header />
+              <div className='FilmPicker-listWrapper'>
+                <List title='Watch List' list='WATCH_LIST' films={watchListFilms} />
+                <List title='Wish List' list='WISH_LIST' films={wishListFilms} showMoveFilmButton showDownloadButtons />
+              </div>
+            </Fragment>
           )
         }}
       </Query>

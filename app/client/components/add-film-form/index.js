@@ -63,7 +63,9 @@ class AddFilmForm extends Component {
     const { films } = cache.readQuery({ query: FilmsQuery })
     cache.writeQuery({
       query: FilmsQuery,
-      data: { films: films.concat(createdFilm) }
+      data: {
+        films: films.concat(createdFilm)
+      }
     })
   }
 
