@@ -30,8 +30,10 @@ class FilmPicker extends Component {
           {({ loading, data, error }) => {
             if (loading || error) return null
             const { films } = data
-            const wishListFilms = films.filter(film => film.parentList === 'WISH_LIST')
-            const watchListFilms = films.filter(film => film.parentList === 'WATCH_LIST')
+            const wishListFilms = films
+              .filter(film => film.parentList === 'WISH_LIST')
+            const watchListFilms = films
+              .filter(film => film.parentList === 'WATCH_LIST')
 
             return (
               <Fragment>
@@ -39,8 +41,18 @@ class FilmPicker extends Component {
                 <Header />
                 {userLoggedIn && (
                   <div className='FilmPicker-listWrapper'>
-                    <List title='Watch List' list='WATCH_LIST' films={watchListFilms} />
-                    <List title='Wish List' list='WISH_LIST' films={wishListFilms} showMoveFilmButton showDownloadButtons />
+                    <List
+                      title='Watch List'
+                      list='WATCH_LIST'
+                      films={watchListFilms}
+                    />
+                    <List
+                      title='Wish List'
+                      list='WISH_LIST'
+                      films={wishListFilms}
+                      showMoveFilmButton
+                      showDownloadButtons
+                    />
                   </div>
                 )}
               </Fragment>
@@ -54,10 +66,17 @@ class FilmPicker extends Component {
   renderModal (modal, films) {
     const { type, data } = modal
     const modals = {
-      createFilmForm: data => <CreateFilmForm list={data.list} />,
-      updateFilmForm: data => <UpdateFilmForm film={films.find(film => film.id === data.id)} />,
-      pickFilmForm: data => <PickFilmForm />,
-      loginForm: data => <LoginForm />
+      createFilmForm: data => (
+        <CreateFilmForm list={data.list} />),
+      updateFilmForm: data => (
+        <UpdateFilmForm film={films.find(film => film.id === data.id)} />
+      ),
+      pickFilmForm: data => (
+        <PickFilmForm />
+      ),
+      loginForm: data => (
+        <LoginForm />
+      )
     }
 
     return (
