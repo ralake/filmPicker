@@ -7,7 +7,7 @@ import './list.css'
 
 const map = () => {}
 
-const actions = ['showAddFilmForm']
+const actions = ['openModal']
 
 class List extends Component {
   render () {
@@ -48,8 +48,8 @@ class List extends Component {
   }
 
   launchAddFilmModal () {
-    const { showAddFilmForm, list } = this.props
-    showAddFilmForm({ show: true, list })
+    const { openModal, list } = this.props
+    openModal({ type: 'createFilmForm', data: { listToAddFilmTo: list } })
   }
 }
 

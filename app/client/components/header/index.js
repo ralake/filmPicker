@@ -10,7 +10,7 @@ function map (state) {
   }
 }
 
-const actions = ['showPickFilmForm']
+const actions = ['openModal']
 
 class Header extends Component {
   render () {
@@ -35,7 +35,7 @@ class Header extends Component {
           />
           <Button
             size='large'
-            onClick={() => this.launchPickFilmModal()}
+            onClick={() => this.openPickFilmModal()}
             text='Pick film'
           />
         </div>
@@ -43,8 +43,8 @@ class Header extends Component {
     )
   }
 
-  launchPickFilmModal () {
-    this.props.showPickFilmForm({ show: true })
+  openPickFilmModal () {
+    this.props.openModal({ type: 'pickFilmForm' })
   }
 
   exportFilms () {

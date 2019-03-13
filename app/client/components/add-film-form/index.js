@@ -13,12 +13,11 @@ const defaultFilm = {
 
 function map (state) {
   return {
-    listToAddFilmTo: state.listToAddFilmTo,
-    addFilmFormShowing: state.addFilmFormShowing
+    listToAddFilmTo: state.listToAddFilmTo
   }
 }
 
-const actions = ['showAddFilmForm']
+const actions = ['closeModal']
 
 class AddFilmForm extends Component {
   constructor () {
@@ -29,34 +28,29 @@ class AddFilmForm extends Component {
   }
 
   render () {
-    const { addFilmFormShowing } = this.props
     const { film } = this.state
 
-    if (addFilmFormShowing) {
-      return (
-        <Mutation
-          mutation={CreateFilmMutation}
-          update={(cache, { data: { createFilm: createdFilm } }) => {
-            this.handleUpdate(cache, createdFilm)
-          }}
-          onCompleted={() => this.handleClose()}
-        >
-          {(createFilm, { data, loading, error }) => {
-            return (
-              <FilmForm
-                film={film}
-                buttonText='Add'
-                onChange={film => this.handleChange(film)}
-                onClose={() => this.handleClose()}
-                onSubmit={() => this.handleSubmit(createFilm)}
-              />
-            )
-          }}
-        </Mutation>
-      )
-    } else {
-      return null
-    }
+    return (
+      <Mutation
+        mutation={CreateFilmMutation}
+        update={(cache, { data: { createFilm: createdFilm } }) => {
+          this.handleUpdate(cache, createdFilm)
+        }}
+        onCompleted={() => this.handleClose()}
+      >
+        {(createFilm, { data, loading, error }) => {
+          return (
+            <FilmForm
+              film={film}
+              buttonText='Add'
+              onChange={film => this.handleChange(film)}
+              onClose={() => this.handleClose()}
+              onSubmit={() => this.handleSubmit(createFilm)}
+            />
+          )
+        }}
+      </Mutation>
+    )
   }
 
   handleUpdate (cache, createdFilm) {
@@ -74,7 +68,7 @@ class AddFilmForm extends Component {
   }
 
   handleClose () {
-    this.props.showAddFilmForm({ show: false })
+    this.props.closeModal()
     this.setState({ film: defaultFilm })
   }
 

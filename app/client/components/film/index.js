@@ -11,7 +11,7 @@ import './film.css'
 
 const map = () => {}
 
-const actions = ['showEditFilmForm']
+const actions = ['openModal']
 
 class Film extends Component {
   render () {
@@ -40,7 +40,7 @@ class Film extends Component {
                 )}
               </Mutation>
             )}
-            <Button size='small' onClick={() => this.showEditFilmModal(film)} text='Edit' />
+            <Button size='small' onClick={() => this.openUpdateFilmModal(film)} text='Edit' />
             <Mutation
               mutation={DeleteFilmMutation}
               update={(cache, { data: { deleteFilm: deletedFilm } }) => {
@@ -112,9 +112,12 @@ class Film extends Component {
     })
   }
 
-  showEditFilmModal () {
-    const { film } = this.props
-    this.props.showEditFilmForm({ show: true, id: film.id })
+  openUpdateFilmModal () {
+    const { film, openModal } = this.props
+    openModal({
+      type: 'updateFilmForm',
+      data: { id: film.id }
+    })
   }
 }
 

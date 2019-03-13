@@ -7,12 +7,11 @@ import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
 
 function map (state) {
   return {
-    filmToEdit: state.filmToEdit,
-    editFilmFormShowing: state.editFilmFormShowing
+    filmToEdit: state.filmToEdit
   }
 }
 
-const actions = ['showEditFilmForm']
+const actions = ['closeModal']
 
 class EditFilmForm extends Component {
   constructor (props) {
@@ -23,37 +22,31 @@ class EditFilmForm extends Component {
   }
 
   render () {
-    const { editFilmFormShowing } = this.props
     const { filmUpdates } = this.state
     const { film } = this.props
     const unsavedFilm = {
       ...film,
       ...filmUpdates
     }
-
-    if (editFilmFormShowing && film) {
-      return (
-        <Mutation
-          mutation={UpdateFilmMutation}
-          onCompleted={() => this.handleClose()}
-        >
-          {(updateFilm, { data, loading, error }) => {
-            return (
-              <FilmForm
-                film={unsavedFilm}
-                buttonText='Save'
-                buttonDisabled={_.isEmpty(filmUpdates)}
-                onChange={film => this.handleChange(film)}
-                onClose={() => this.handleClose()}
-                onSubmit={() => this.handleSubmit(updateFilm)}
-              />
-            )
-          }}
-        </Mutation>
-      )
-    } else {
-      return null
-    }
+    return (
+      <Mutation
+        mutation={UpdateFilmMutation}
+        onCompleted={() => this.handleClose()}
+      >
+        {(updateFilm, { data, loading, error }) => {
+          return (
+            <FilmForm
+              film={unsavedFilm}
+              buttonText='Save'
+              buttonDisabled={_.isEmpty(filmUpdates)}
+              onChange={film => this.handleChange(film)}
+              onClose={() => this.handleClose()}
+              onSubmit={() => this.handleSubmit(updateFilm)}
+            />
+          )
+        }}
+      </Mutation>
+    )
   }
 
   handleChange (unsavedFilm) {
@@ -73,7 +66,7 @@ class EditFilmForm extends Component {
   }
 
   handleClose () {
-    this.props.showEditFilmForm({ show: false, id: null })
+    this.props.closeModal()
     this.setState({ film: null })
   }
 

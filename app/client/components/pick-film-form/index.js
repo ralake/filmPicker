@@ -10,13 +10,7 @@ const defaultFilterCriteria = {
   includeForeignLanguageFilms: true
 }
 
-function map (state) {
-  return {
-    showPickFilmForm: state.showPickFilmForm
-  }
-}
-
-const actions = ['pickFilm']
+const actions = ['closeModal']
 
 class PickFilmForm extends Component {
   constructor () {
@@ -28,46 +22,41 @@ class PickFilmForm extends Component {
 
   render () {
     const { includeDocumentaries, includeForeignLanguageFilms } = this.state.filterCriteria
-    const { showPickFilmForm } = this.props
 
-    if (showPickFilmForm) {
-      return (
-        <Modal dismissable handleClose={() => this.handleClose()}>
-          <div className='PickFilmForm'>
-            <p className='PickFilmForm-criteria'>Criteria</p>
-            <Toggle toggled={includeForeignLanguageFilms} onChange={() => this.updateForeignLanguageFilter()} descriptor='Include foreign language films?' />
-            <Toggle toggled={includeDocumentaries} onChange={() => this.updateDocumentaryFilter()} descriptor='Include documentaries?' />
-            <div className='PickFilmForm-buttons'>
-              <Button
-                className='PickFilmForm-randomButton'
-                size='medium'
-                onClick={() => this.handleSubmit('random')}
-                text='Pick random film'
-              />
-              <Button
-                className='PickFilmForm-oldestButton'
-                size='medium'
-                onClick={() => this.handleSubmit('oldest')}
-                text='Pick oldest film'
-              />
-            </div>
+    return (
+      <Modal dismissable handleClose={() => this.handleClose()}>
+        <div className='PickFilmForm'>
+          <p className='PickFilmForm-criteria'>Criteria</p>
+          <Toggle toggled={includeForeignLanguageFilms} onChange={() => this.updateForeignLanguageFilter()} descriptor='Include foreign language films?' />
+          <Toggle toggled={includeDocumentaries} onChange={() => this.updateDocumentaryFilter()} descriptor='Include documentaries?' />
+          <div className='PickFilmForm-buttons'>
+            <Button
+              className='PickFilmForm-randomButton'
+              size='medium'
+              onClick={() => this.handleSubmit('random')}
+              text='Pick random film'
+            />
+            <Button
+              className='PickFilmForm-oldestButton'
+              size='medium'
+              onClick={() => this.handleSubmit('oldest')}
+              text='Pick oldest film'
+            />
           </div>
-        </Modal>
-      )
-    } else {
-      return null
-    }
+        </div>
+      </Modal>
+    )
   }
 
   handleClose () {
-    this.props.showPickFilmForm({ show: false })
+    this.props.closeModal()
     this.setState({ filterCriteria: defaultFilterCriteria })
   }
 
   handleSubmit (type) {
-    const { filterCriteria } = this.state
+    // const { filterCriteria } = this.state
 
-    this.props.pickFilm({ filterCriteria, type })
+    // this.props.pickFilm({ filterCriteria, type })
     this.handleClose()
   }
 
@@ -93,4 +82,4 @@ class PickFilmForm extends Component {
   }
 }
 
-export default connect(map, actions)(PickFilmForm)
+export default connect(null, actions)(PickFilmForm)

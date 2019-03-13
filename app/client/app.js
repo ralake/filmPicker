@@ -23,7 +23,7 @@ userService.onLoginChange(appUser => {
   const user = { loggedIn }
 
   dispatch('updateUser', user)
-  dispatch('showLoginForm', { show: !user.loggedIn })
+  if (!user.loggedIn) dispatch('openModal', { type: 'loginForm' })
 })
 
 ReactDOM.render(
