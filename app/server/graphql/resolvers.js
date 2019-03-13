@@ -5,7 +5,8 @@ const resolvers = {
     return filmService.get()
   },
   async createFilm (args) {
-    const createdFilm = await filmService.create(args.input)
+    const { input } = args
+    const createdFilm = await filmService.create(input)
     return createdFilm
   },
   async updateFilm (args) {

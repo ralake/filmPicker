@@ -1,0 +1,10 @@
+query FilmsQuery {
+  films {
+    id
+    name
+    dateAdded
+    isEnglishLanguage,
+    isFiction
+    parentList
+  }
+}

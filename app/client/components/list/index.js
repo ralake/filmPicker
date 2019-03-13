@@ -48,7 +48,8 @@ class List extends Component {
   }
 
   launchAddFilmModal () {
-    this.props.showAddFilmForm({ show: true, list: this.props.list })
+    const { showAddFilmForm, list } = this.props
+    showAddFilmForm({ show: true, list })
   }
 }
 

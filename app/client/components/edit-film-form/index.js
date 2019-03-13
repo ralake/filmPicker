@@ -5,7 +5,7 @@ import FilmForm from '../film-form'
 function map (state) {
   return {
     filmToEdit: state.filmToEdit,
-    showEditFilmForm: state.showEditFilmForm
+    editFilmFormShowing: state.editFilmFormShowing
   }
 }
 
@@ -29,10 +29,10 @@ class EditFilmForm extends Component {
   }
 
   render () {
-    const { showEditFilmForm } = this.props
+    const { editFilmFormShowing } = this.props
     const { film } = this.state
 
-    if (showEditFilmForm && film) {
+    if (editFilmFormShowing && film) {
       return (
         <FilmForm
           film={film}

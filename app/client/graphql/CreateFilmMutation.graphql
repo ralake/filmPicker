@@ -1,0 +1,10 @@
+mutation CreateFilm ($input: CreateFilmInput) {
+  createFilm (input: $input) {
+    id
+    name
+    dateAdded
+    isEnglishLanguage
+    isFiction
+    parentList
+  }
+}

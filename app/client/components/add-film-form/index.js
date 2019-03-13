@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
-import _ from 'lodash'
+import { Mutation } from 'react-apollo'
 import FilmForm from '../film-form'
+import CreateFilmMutation from '../../graphql/CreateFilmMutation.graphql'
+import FilmsQuery from '../../graphql/FilmsQuery.graphql'
 
 const defaultFilm = {
   isFiction: true,
@@ -11,12 +13,12 @@ const defaultFilm = {
 
 function map (state) {
   return {
-    showAddFilmForm: state.showAddFilmForm,
-    listToAddFilmTo: state.listToAddFilmTo
+    listToAddFilmTo: state.listToAddFilmTo,
+    addFilmFormShowing: state.addFilmFormShowing
   }
 }
 
-const actions = ['addNewFilm']
+const actions = ['showAddFilmForm']
 
 class AddFilmForm extends Component {
   constructor () {
@@ -27,22 +29,42 @@ class AddFilmForm extends Component {
   }
 
   render () {
-    const { showAddFilmForm } = this.props
+    const { addFilmFormShowing } = this.props
     const { film } = this.state
 
-    if (showAddFilmForm) {
+    if (addFilmFormShowing) {
       return (
-        <FilmForm
-          film={film}
-          buttonText='Add'
-          onChange={film => this.handleChange(film)}
-          onClose={() => this.handleClose()}
-          onSubmit={() => this.handleSubmit()}
-        />
+        <Mutation
+          mutation={CreateFilmMutation}
+          update={(cache, { data: { createFilm: createdFilm } }) => {
+            this.handleUpdate(cache, createdFilm)
+          }}
+          onCompleted={() => this.handleClose()}
+        >
+          {(createFilm, { data, loading, error }) => {
+            return (
+              <FilmForm
+                film={film}
+                buttonText='Add'
+                onChange={film => this.handleChange(film)}
+                onClose={() => this.handleClose()}
+                onSubmit={() => this.handleSubmit(createFilm)}
+              />
+            )
+          }}
+        </Mutation>
       )
     } else {
       return null
     }
+  }
+
+  handleUpdate (cache, createdFilm) {
+    const { films } = cache.readQuery({ query: FilmsQuery })
+    cache.writeQuery({
+      query: FilmsQuery,
+      data: { films: films.concat(createdFilm) }
+    })
   }
 
   handleChange (film) {
@@ -54,12 +76,18 @@ class AddFilmForm extends Component {
     this.setState({ film: defaultFilm })
   }
 
-  handleSubmit () {
+  handleSubmit (createFilm) {
     const { film } = this.state
-    const { listToAddFilmTo, addNewFilm } = this.props
+    const { listToAddFilmTo } = this.props
 
-    addNewFilm({ film: _.assign({}, film, { dateAdded: Date.now() }), list: listToAddFilmTo })
-    this.handleClose()
+    createFilm({
+      variables: {
+        input: {
+          ...film,
+          parentList: listToAddFilmTo
+        }
+      }
+    })
   }
 }
 

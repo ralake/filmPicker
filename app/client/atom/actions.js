@@ -13,13 +13,9 @@ function updateFilms ({ get, set }, payload) {
 function showAddFilmForm ({ get, set }, payload) {
   set({
     showModalOverlay: payload.show,
-    showAddFilmForm: payload.show,
+    addFilmFormShowing: payload.show,
     listToAddFilmTo: payload.list
   })
-}
-
-function addNewFilm ({ get, set }, payload) {
-  filmService.add(payload.film, payload.list)
 }
 
 function editFilm ({ get, set }, payload) {
@@ -32,7 +28,7 @@ function editFilm ({ get, set }, payload) {
 function showEditFilmForm ({ get, set }, payload) {
   set({
     showModalOverlay: payload.show,
-    showEditFilmForm: payload.show,
+    editFilmFormShowing: payload.show,
     filmToEdit: payload.film
   })
 }
@@ -77,7 +73,6 @@ function updateUser ({ get, set }, payload) {
 
 export default {
   removeFilm,
-  addNewFilm,
   editFilm,
   updateFilms,
   showPickFilmForm,
