@@ -15,10 +15,9 @@ function submitLoginForm ({ get, set }, payload) {
 }
 
 function openModal ({ set }, payload) {
-  const { show, type, data } = payload
+  const { type, data } = payload
   set({
     modal: {
-      show,
       type,
       data
     }
@@ -29,9 +28,23 @@ function closeModal ({ set }) {
   set({ modal: null })
 }
 
+function pickFilm ({ set }, payload) {
+  set({
+    pickFilmCriteria: payload
+  })
+}
+
+function clearPickedFilm ({ set }) {
+  set({
+    pickFilmCriteria: null
+  })
+}
+
 export default {
   openModal,
   closeModal,
   submitLoginForm,
-  updateUser
+  updateUser,
+  pickFilm,
+  clearPickedFilm
 }

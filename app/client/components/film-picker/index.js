@@ -9,7 +9,7 @@ import PickFilmForm from '../pick-film-form'
 import CreateFilmForm from '../create-film-form'
 import UpdateFilmForm from '../update-film-form'
 import LoginForm from '../login-form'
-import FilmsQuery from '../../graphql/FilmsQuery.graphql'
+import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 import './film-picker.css'
 
 function map (state) {
@@ -25,7 +25,7 @@ class FilmPicker extends Component {
     return (
       <div className='FilmPicker'>
         <Query
-          query={FilmsQuery}
+          query={GetFilmsQuery}
         >
           {({ loading, data, error }) => {
             if (loading || error) return null

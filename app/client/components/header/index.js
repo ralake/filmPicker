@@ -1,32 +1,25 @@
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
+import { Query } from 'react-apollo'
 import Button from '../button'
+import PickFilmQuery from '../../graphql/PickFilmQuery.graphql'
 import './header.css'
 
 function map (state) {
   return {
-    pickedFilm: state.pickedFilm,
+    pickFilmCriteria: state.pickFilmCriteria,
     films: state.films
   }
 }
 
-const actions = ['openModal']
+const actions = ['openModal', 'clearPickedFilm']
 
 class Header extends Component {
   render () {
-    const { pickedFilm } = this.props
-    const notification = pickedFilm && (
-      <p className='Header-pickedFilm'>
-        <span>Time to watch </span>
-        <span className='Header-pickedFilmName'>{pickedFilm.name}</span>!
-      </p>
-    )
-    const pickedFilmNotification = pickedFilm ? notification : null
-
     return (
       <div className='Header'>
         <h1 className='Header-title'>Film Picker</h1>
-        {pickedFilmNotification}
+        {this.renderPickedFilm()}
         <div>
           <Button
             size='large'
@@ -43,8 +36,33 @@ class Header extends Component {
     )
   }
 
+  renderPickedFilm () {
+    const { pickFilmCriteria } = this.props
+    if (!pickFilmCriteria) return null
+
+    return (
+      <Query
+        query={PickFilmQuery}
+        variables={{ input: pickFilmCriteria }}
+      >
+        {({ loading, error, data }) => {
+          if (loading || error) return null
+          const { pickFilm: pickedFilm } = data
+          return (
+            <p className='Header-pickedFilm'>
+              <span>Time to watch </span>
+              <span className='Header-pickedFilmName'>{pickedFilm.name}</span>!
+            </p>
+          )
+        }}
+      </Query>
+    )
+  }
+
   openPickFilmModal () {
-    this.props.openModal({ type: 'pickFilmForm' })
+    const { clearPickedFilm, openModal } = this.props
+    clearPickedFilm()
+    openModal({ type: 'pickFilmForm' })
   }
 
   exportFilms () {

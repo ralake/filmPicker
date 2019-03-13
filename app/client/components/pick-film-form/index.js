@@ -5,23 +5,23 @@ import Button from '../button'
 import Modal from '../modal'
 import './pick-film-form.css'
 
-const defaultFilterCriteria = {
+const defaultFilter = {
   includeDocumentaries: true,
   includeForeignLanguageFilms: true
 }
 
-const actions = ['closeModal']
+const actions = ['closeModal', 'pickFilm']
 
 class PickFilmForm extends Component {
   constructor () {
     super()
     this.state = {
-      filterCriteria: defaultFilterCriteria
+      filter: defaultFilter
     }
   }
 
   render () {
-    const { includeDocumentaries, includeForeignLanguageFilms } = this.state.filterCriteria
+    const { includeDocumentaries, includeForeignLanguageFilms } = this.state.filter
 
     return (
       <Modal dismissable handleClose={() => this.handleClose()}>
@@ -33,13 +33,13 @@ class PickFilmForm extends Component {
             <Button
               className='PickFilmForm-randomButton'
               size='medium'
-              onClick={() => this.handleSubmit('random')}
+              onClick={() => this.pickFilm('RANDOM')}
               text='Pick random film'
             />
             <Button
               className='PickFilmForm-oldestButton'
               size='medium'
-              onClick={() => this.handleSubmit('oldest')}
+              onClick={() => this.pickFilm('OLDEST')}
               text='Pick oldest film'
             />
           </div>
@@ -50,35 +50,36 @@ class PickFilmForm extends Component {
 
   handleClose () {
     this.props.closeModal()
-    this.setState({ filterCriteria: defaultFilterCriteria })
+    this.setState({ filter: defaultFilter })
   }
 
-  handleSubmit (type) {
-    // const { filterCriteria } = this.state
+  pickFilm (type) {
+    const { pickFilm } = this.props
+    const { filter } = this.state
 
-    // this.props.pickFilm({ filterCriteria, type })
+    pickFilm({ type, filter })
     this.handleClose()
   }
 
-  updateFilterCriteria (key, value) {
-    const { filterCriteria } = this.state
+  updateFilter (key, value) {
+    const { filter } = this.state
 
     this.setState({
-      filterCriteria: {
-        ...filterCriteria,
+      filter: {
+        ...filter,
         [key]: value
       }
     })
   }
 
   updateForeignLanguageFilter () {
-    const { includeForeignLanguageFilms } = this.state.filterCriteria
-    this.updateFilterCriteria('includeForeignLanguageFilms', !includeForeignLanguageFilms)
+    const { includeForeignLanguageFilms } = this.state.filter
+    this.updateFilter('includeForeignLanguageFilms', !includeForeignLanguageFilms)
   }
 
   updateDocumentaryFilter () {
-    const { includeDocumentaries } = this.state.filterCriteria
-    this.updateFilterCriteria('includeDocumentaries', !includeDocumentaries)
+    const { includeDocumentaries } = this.state.filter
+    this.updateFilter('includeDocumentaries', !includeDocumentaries)
   }
 }
 

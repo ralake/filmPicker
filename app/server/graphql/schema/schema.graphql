@@ -3,6 +3,11 @@ enum LIST {
   WATCH_LIST
 }
 
+enum PICK_TYPE {
+  OLDEST
+  RANDOM
+}
+
 type Film {
   name: String!
   id: ID!
@@ -10,6 +15,11 @@ type Film {
   isFiction: Boolean!
   isEnglishLanguage: Boolean!
   parentList: LIST!
+}
+
+input PickFilmFilter {
+  includeDocumentaries: Boolean
+  includeForeignLanguageFilms: Boolean
 }
 
 input CreateFilmInput {
@@ -27,12 +37,18 @@ input UpdateFilmInput {
   parentList: LIST
 }
 
+input PickFilmInput {
+  filter: PickFilmFilter!,
+  type: PICK_TYPE!
+}
+
 type Query {
   films: [Film!]!
+  pickFilm(input: PickFilmInput!): Film!
 }
 
 type Mutation {
-  createFilm(input: CreateFilmInput): Film!
-  updateFilm(id: ID!, input: UpdateFilmInput): Film!
+  createFilm(input: CreateFilmInput!): Film!
+  updateFilm(id: ID!, input: UpdateFilmInput!): Film!
   deleteFilm(id: ID!): Film!
 }

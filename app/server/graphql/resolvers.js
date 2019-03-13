@@ -4,20 +4,22 @@ const resolvers = {
   films (args) {
     return filmService.get()
   },
-  async createFilm (args) {
+  pickFilm (args) {
     const { input } = args
-    const createdFilm = await filmService.create(input)
-    return createdFilm
+    const { type, filter } = input
+    return filmService.pick(type, filter)
   },
-  async updateFilm (args) {
+  createFilm (args) {
+    const { input } = args
+    return filmService.create(input)
+  },
+  updateFilm (args) {
     const { id, input } = args
-    const updatedFilm = await filmService.update(id, input)
-    return updatedFilm
+    return filmService.update(id, input)
   },
-  async deleteFilm (args) {
+  deleteFilm (args) {
     const { id } = args
-    const deletedFilm = await filmService.delete(id)
-    return deletedFilm
+    return filmService.delete(id)
   }
 }
 

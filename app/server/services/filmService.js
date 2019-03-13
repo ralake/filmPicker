@@ -11,7 +11,7 @@ const firebaseCredentials = {
 
 firebase.initializeApp(firebaseCredentials)
 
-module.exports = { get, create, update, delete: deleteFilm }
+module.exports = { get, create, update, delete: deleteFilm, pick }
 
 async function get () {
   const films = await firebase.database().ref('films').once('value')
@@ -64,4 +64,35 @@ async function setFilmById (id, film) {
     .database()
     .ref(`films/${id}`)
     .set(film)
+}
+
+async function pick (type, filter) {
+  const films = await get()
+  const filteredFilms = filterFilms(films, filter)
+  const randomFilmIndices = getRandomIndices(filteredFilms)
+  const randomFilms = randomFilmIndices.map(index => filteredFilms[index])
+  const chosenFilms = type === 'RANDOM'
+    ? randomFilms
+    : filteredFilms
+  return _.first(_.orderBy(chosenFilms, ['dateAdded'], 'asc'))
+}
+
+function getRandomIndices (input, chosen = []) {
+  const lowerLimit = 0
+  const upperLimit = input.length
+  const randomIndex = _.random(lowerLimit, upperLimit)
+
+  if (!chosen.includes(randomIndex)) chosen.push(randomIndex)
+  if (chosen.length > 4) return chosen
+  return getRandomIndices(input, chosen)
+}
+
+function filterFilms (films, filterCriteria) {
+  const { includeDocumentaries, includeForeignLanguageFilms } = filterCriteria
+  let filteredFilms = _.values(films)
+
+  if (!includeDocumentaries) filteredFilms = filteredFilms.filter(film => film.isFiction)
+  if (!includeForeignLanguageFilms) filteredFilms = filteredFilms.filter(film => film.isEnglishLanguage)
+
+  return filteredFilms
 }

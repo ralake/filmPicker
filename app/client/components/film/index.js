@@ -6,7 +6,7 @@ import { Mutation } from 'react-apollo'
 import Button from '../button'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
-import FilmsQuery from '../../graphql/FilmsQuery.graphql'
+import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 import './film.css'
 
 const map = () => {}
@@ -103,9 +103,9 @@ class Film extends Component {
   }
 
   handleDeletedFilm (cache, deletedFilmId) {
-    const { films } = cache.readQuery({ query: FilmsQuery })
+    const { films } = cache.readQuery({ query: GetFilmsQuery })
     cache.writeQuery({
-      query: FilmsQuery,
+      query: GetFilmsQuery,
       data: {
         films: films.filter(f => f.id !== deletedFilmId)
       }

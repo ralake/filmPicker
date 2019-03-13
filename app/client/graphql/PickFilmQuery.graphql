@@ -1,0 +1,10 @@
+query PickFilmQuery ($input: PickFilmInput!) {
+  pickFilm (input: $input) {
+    id
+    name
+    dateAdded
+    isEnglishLanguage
+    isFiction
+    parentList
+  }
+}

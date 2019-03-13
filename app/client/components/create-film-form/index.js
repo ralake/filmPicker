@@ -3,7 +3,7 @@ import { connect } from 'tiny-atom/react'
 import { Mutation } from 'react-apollo'
 import FilmForm from '../film-form'
 import CreateFilmMutation from '../../graphql/CreateFilmMutation.graphql'
-import FilmsQuery from '../../graphql/FilmsQuery.graphql'
+import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 
 const actions = ['closeModal']
 
@@ -45,9 +45,9 @@ class CreateFilmForm extends Component {
   }
 
   handleUpdate (cache, createdFilm) {
-    const { films } = cache.readQuery({ query: FilmsQuery })
+    const { films } = cache.readQuery({ query: GetFilmsQuery })
     cache.writeQuery({
-      query: FilmsQuery,
+      query: GetFilmsQuery,
       data: {
         films: films.concat(createdFilm)
       }

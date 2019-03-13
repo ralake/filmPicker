@@ -1,4 +1,4 @@
-query FilmsQuery {
+query GetFilmsQuery {
   films {
     id
     name
