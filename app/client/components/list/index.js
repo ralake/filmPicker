@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
-import _ from 'lodash'
+import sortBy from 'lodash-es/sortBy'
 import Button from '../button'
 import Film from '../film'
 import './list.css'
@@ -32,7 +32,7 @@ class List extends Component {
 
   renderFilmList () {
     const { films, list, showMoveFilmButton, showDownloadButtons } = this.props
-    const alphabeticallyOrderedFilms = _.sortBy(films, 'name')
+    const alphabeticallyOrderedFilms = sortBy(films, 'name')
     return (
       <ul className='List-wrapper'>{
         alphabeticallyOrderedFilms.map(film => (

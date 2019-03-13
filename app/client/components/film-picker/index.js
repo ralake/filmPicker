@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import _ from 'lodash'
+import get from 'lodash-es/get'
 import { connect } from 'tiny-atom/react'
 import { Query } from 'react-apollo'
 import Header from '../header'
@@ -14,7 +14,7 @@ import './film-picker.css'
 
 function map (state) {
   return {
-    userLoggedIn: _.get(state.user, 'loggedIn'),
+    userLoggedIn: get(state.user, 'loggedIn'),
     modal: state.modal
   }
 }

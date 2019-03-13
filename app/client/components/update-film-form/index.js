@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
+import isEmpty from 'lodash-es/isEmpty'
 import { connect } from 'tiny-atom/react'
 import { Mutation } from 'react-apollo'
 import FilmForm from '../film-form'
@@ -32,7 +32,7 @@ class UpdateFilmForm extends Component {
             <FilmForm
               film={unsavedFilm}
               buttonText='Save'
-              buttonDisabled={_.isEmpty(filmUpdates)}
+              buttonDisabled={isEmpty(filmUpdates)}
               onChange={film => this.handleChange(film)}
               onClose={() => this.handleClose()}
               onSubmit={() => this.handleSubmit(updateFilm)}
