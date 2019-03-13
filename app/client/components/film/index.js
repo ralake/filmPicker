@@ -34,8 +34,8 @@ class Film extends Component {
             { showMoveFilmButton && (
               <Mutation
                 mutation={UpdateFilmMutation}
-                update={(cache, { data: { updateFilm: updatedFilm } }) => {
-                  this.handleFilmMove(cache, updatedFilm)
+                update={(cache, { data: { updateFilm: movedFilm } }) => {
+                  this.handleMovedFilm(cache, movedFilm)
                 }}
               >
                 {(updateFilm, { data, loading, error }) => (
@@ -77,15 +77,15 @@ class Film extends Component {
     window.open(url, '_blank')
   }
 
-  handleFilmMove (cache, updatedFilm) {
+  handleMovedFilm (cache, movedFilm) {
     const { films } = cache.readQuery({ query: FilmsQuery })
-    const updatedFilmIndex = _.findIndex(films, updatedFilm)
+    const updatedFilmIndex = _.findIndex(films, movedFilm)
     cache.writeQuery({
       query: FilmsQuery,
       data: {
         films: [
           ...films.slice(0, updatedFilmIndex),
-          updatedFilm,
+          movedFilm,
           ...films.slice(updatedFilmIndex + 1)
         ]
       }

@@ -37,7 +37,7 @@ class EditFilmForm extends Component {
         <Mutation
           mutation={UpdateFilmMutation}
           update={(cache, { data: { updateFilm: updatedFilm } }) => {
-            this.handleUpdate(cache, updatedFilm)
+            this.handleUpdatedFilm(cache, updatedFilm)
           }}
           onCompleted={() => this.handleClose()}
         >
@@ -60,7 +60,7 @@ class EditFilmForm extends Component {
     }
   }
 
-  handleUpdate (cache, updatedFilm) {
+  handleUpdatedFilm (cache, updatedFilm) {
     const { films } = cache.readQuery({ query: FilmsQuery })
     const updatedFilmIndex = _.findIndex(films, updatedFilm)
     cache.writeQuery({
