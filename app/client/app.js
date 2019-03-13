@@ -7,15 +7,13 @@ import * as firebase from 'firebase'
 import _ from 'lodash'
 import userService from './lib/user-service'
 import FilmPicker from './components/film-picker'
-import dbConfig from './db-config'
 import atom from './atom'
+import firebaseConfig from './firebaseConfig'
 import './app.css'
 
-const client = new ApolloClient({
-  uri: '/graphql'
-})
+const client = new ApolloClient()
 
-firebase.initializeApp(dbConfig)
+firebase.initializeApp(firebaseConfig)
 
 userService.onLoginChange(appUser => {
   const { dispatch } = atom
