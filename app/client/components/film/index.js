@@ -2,7 +2,11 @@
 
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
+import _ from 'lodash'
+import { Mutation } from 'react-apollo'
 import Button from '../button'
+import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
+import FilmsQuery from '../../graphql/FilmsQuery.graphql'
 import './film.css'
 
 const map = () => {}
@@ -15,7 +19,7 @@ class Film extends Component {
     const { name, isEnglishLanguage, isFiction, id, dateAdded } = film
     const language = isEnglishLanguage ? 'English language' : 'Foreign language'
     const type = isFiction ? 'fiction' : 'documentary'
-    const date = dateAdded ? new Date(dateAdded).toDateString() : '(not known)'
+    const date = dateAdded || '(not known)'
 
     return (
       <li className='Film'>
@@ -28,7 +32,16 @@ class Film extends Component {
           </div>
           <div className='Film-btnWrapper'>
             { showMoveFilmButton && (
-              <Button size='small' onClick={() => { this.moveFilmToWatchList(id) }} text='Move' />
+              <Mutation
+                mutation={UpdateFilmMutation}
+                update={(cache, { data: { updateFilm: updatedFilm } }) => {
+                  this.handleFilmMove(cache, updatedFilm)
+                }}
+              >
+                {(updateFilm, { data, loading, error }) => (
+                  <Button size='small' onClick={() => this.moveFilm(updateFilm)} text='Move' />
+                )}
+              </Mutation>
             )}
             <Button size='small' onClick={() => this.showEditFilmModal(film)} text='Edit' />
             <Button size='small' onClick={() => this.deleteFilm(id)} text='Remove' />
@@ -64,6 +77,21 @@ class Film extends Component {
     window.open(url, '_blank')
   }
 
+  handleFilmMove (cache, updatedFilm) {
+    const { films } = cache.readQuery({ query: FilmsQuery })
+    const updatedFilmIndex = _.findIndex(films, updatedFilm)
+    cache.writeQuery({
+      query: FilmsQuery,
+      data: {
+        films: [
+          ...films.slice(0, updatedFilmIndex),
+          updatedFilm,
+          ...films.slice(updatedFilmIndex + 1)
+        ]
+      }
+    })
+  }
+
   deleteFilm (id) {
     this.props.removeFilm({ id, list: this.props.parentList })
   }
@@ -73,12 +101,13 @@ class Film extends Component {
     this.props.showEditFilmForm({ show: true, id: film.id })
   }
 
-  moveFilmToWatchList (id) {
-    const { parentList } = this.props
-    this.props.moveFilm({
-      id,
-      fromList: parentList,
-      toList: 'watchListFilms'
+  moveFilm (updateFilm) {
+    const { film } = this.props
+    updateFilm({
+      variables: {
+        id: film.id,
+        input: { parentList: 'WATCH_LIST' }
+      }
     })
   }
 }
