@@ -7,7 +7,7 @@
   "author": "Richard Lake",
   "license": "MIT",
   "scripts": {
-    "start": "node ."
+    "start": "node app"
   },
   "engines": {
     "node": "8.x.x"
