@@ -1,5 +1,5 @@
 {
-  "name": "filmPicker",
+  "name": "film-picker",
   "version": "1.0.0",
   "description": "A film picker to aid my poor decision making",
   "main": "index.js",
@@ -7,27 +7,36 @@
   "author": "Richard Lake",
   "license": "MIT",
   "scripts": {
-    "start": "node ."
+    "start": "node app"
   },
   "engines": {
     "node": "8.x.x"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "apollo-boost": "^0.3.1",
+    "axios": "^0.18.0",
     "babel-loader": "^8.0.5",
     "classnames": "^2.2.5",
     "config": "^3.0.1",
     "css-loader": "^2.1.1",
     "express": "^4.15.3",
+    "express-graphql": "^0.7.1",
     "firebase": "^4.1.3",
+    "graphql": "^14.1.1",
+    "graphql-tag": "^2.10.1",
     "lodash": "^4.17.4",
+    "lodash-es": "^4.17.11",
+    "nodemon": "^1.18.10",
     "npm": "^6.1.0",
-    "preact": "^8.2.1",
+    "react": "^16.8.4",
+    "react-apollo": "^2.5.2",
+    "react-dom": "^16.8.4",
     "shortid": "^2.2.8",
     "style-loader": "^0.23.1",
-    "tiny-atom": "^0.4.0",
+    "tiny-atom": "^4.2.2",
     "webpack": "^3.0.0"
   },
   "devDependencies": {
