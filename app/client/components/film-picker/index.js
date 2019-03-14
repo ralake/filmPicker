@@ -38,7 +38,7 @@ class FilmPicker extends Component {
             return (
               <Fragment>
                 {!!modal && this.renderModal(modal, films)}
-                <Header />
+                <Header films={films} />
                 {userLoggedIn && (
                   <div className='FilmPicker-listWrapper'>
                     <List

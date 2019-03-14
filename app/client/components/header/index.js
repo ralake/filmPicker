@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
 import { Query } from 'react-apollo'
+import omit from 'lodash-es/omit'
 import Button from '../button'
 import PickFilmQuery from '../../graphql/PickFilmQuery.graphql'
 import './header.css'
 
 function map (state) {
   return {
-    pickFilmCriteria: state.pickFilmCriteria,
-    films: state.films
+    pickFilmCriteria: state.pickFilmCriteria
   }
 }
 
@@ -66,12 +66,20 @@ class Header extends Component {
   }
 
   exportFilms () {
-    const { films } = this.props
-    const encodedFilms = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(films))}`
+    const films = this.props.films.reduce(
+      (memo, film) => ({
+        ...memo,
+        [film.id]: omit(film, ['__typename'])
+      }),
+      {}
+    )
+
+    const encodedFilms = encodeURIComponent(JSON.stringify({ films }))
+    const encodedData = `text/json;charset=utf-8,${encodedFilms}`
     const downloadLink = document.createElement('a')
 
     downloadLink.display = 'hidden'
-    downloadLink.setAttribute('href', `data:${encodedFilms}`)
+    downloadLink.setAttribute('href', `data:${encodedData}`)
     downloadLink.setAttribute('download', 'filmPickerExport.json')
     document.body.appendChild(downloadLink)
     downloadLink.click()
