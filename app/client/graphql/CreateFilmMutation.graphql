@@ -1,4 +1,4 @@
-mutation CreateFilm ($input: CreateFilmInput) {
+mutation CreateFilm ($input: CreateFilmInput!) {
   createFilm (input: $input) {
     id
     name
