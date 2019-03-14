@@ -5,6 +5,7 @@ mutation CreateFilm ($input: CreateFilmInput!) {
     dateAdded
     isEnglishLanguage
     isFiction
+    isClareFriendly
     parentList
   }
 }

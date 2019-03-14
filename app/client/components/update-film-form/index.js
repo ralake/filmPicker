@@ -45,7 +45,7 @@ class UpdateFilmForm extends Component {
 
   handleChange (unsavedFilm) {
     const { film } = this.props
-    const editableAttributes = ['name', 'dateAdded', 'isEnglishLanguage', 'isFiction', 'parentList']
+    const editableAttributes = ['name', 'dateAdded', 'isEnglishLanguage', 'isFiction', 'isClareFriendly', 'parentList']
     const filmUpdates = editableAttributes
       .reduce(
         (memo, attr) => {

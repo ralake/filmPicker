@@ -5,6 +5,7 @@ query PickFilmQuery ($input: PickFilmInput!) {
     dateAdded
     isEnglishLanguage
     isFiction
+    isClareFriendly
     parentList
   }
 }

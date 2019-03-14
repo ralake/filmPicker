@@ -6,6 +6,10 @@
   background-color: #fff;
 }
 
+.Film.is-clareFriendly {
+  background-color: var(--color-blue-lightest);
+}
+
 .Film-section {
   display: flex;
   justify-content: space-between;

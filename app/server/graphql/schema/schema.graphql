@@ -14,6 +14,7 @@ type Film {
   dateAdded: String!
   isFiction: Boolean!
   isEnglishLanguage: Boolean!
+  isClareFriendly: Boolean
   parentList: LIST!
 }
 
@@ -26,6 +27,7 @@ input CreateFilmInput {
   name: String!
   isFiction: Boolean!
   isEnglishLanguage: Boolean!
+  isClareFriendly: Boolean!
   parentList: LIST!
 }
 
@@ -34,6 +36,7 @@ input UpdateFilmInput {
   dateAdded: String
   isFiction: Boolean
   isEnglishLanguage: Boolean
+  isClareFriendly: Boolean
   parentList: LIST
 }
 

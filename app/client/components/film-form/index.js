@@ -11,7 +11,7 @@ class FilmForm extends Component {
 
   render () {
     const { onSubmit, onClose, film, buttonText, buttonDisabled } = this.props
-    const { name, isEnglishLanguage, isFiction } = film
+    const { name, isEnglishLanguage, isFiction, isClareFriendly } = film
 
     return (
       <Modal
@@ -26,19 +26,39 @@ class FilmForm extends Component {
             }}
             className='FilmForm-input'
             type='text'
-            onChange={event => this.updateFilmName(event)}
-            onBlur={event => this.updateFilmName(event)}
+            onChange={event => {
+              this.updateFilmAttribute({
+                name: event.target.value
+              })
+            }}
             value={name}
           />
           <Toggle
             toggled={!isEnglishLanguage}
-            onChange={() => this.updateForeignLanguageAttribute()}
+            onChange={() => {
+              this.updateFilmAttribute({
+                isEnglishLanguage: !isEnglishLanguage
+              })
+            }}
             descriptor='Foreign Language?'
           />
           <Toggle
             toggled={!isFiction}
-            onChange={() => this.updateDocumentaryAttribute()}
+            onChange={() => {
+              this.updateFilmAttribute({
+                isFiction: !isFiction
+              })
+            }}
             descriptor='Documentary?'
+          />
+          <Toggle
+            toggled={isClareFriendly}
+            onChange={() => {
+              this.updateFilmAttribute({
+                isClareFriendly: !isClareFriendly
+              })
+            }}
+            descriptor='Clare friendly?'
           />
           <Button
             size='large'
@@ -58,20 +78,6 @@ class FilmForm extends Component {
       ...film,
       ...change
     })
-  }
-
-  updateFilmName (event) {
-    this.updateFilmAttribute({ name: event.target.value })
-  }
-
-  updateForeignLanguageAttribute () {
-    const { isEnglishLanguage } = this.props.film
-    this.updateFilmAttribute({ isEnglishLanguage: !isEnglishLanguage })
-  }
-
-  updateDocumentaryAttribute () {
-    const { isFiction } = this.props.film
-    this.updateFilmAttribute({ isFiction: !isFiction })
   }
 }
 

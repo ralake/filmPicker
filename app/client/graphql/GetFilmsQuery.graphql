@@ -3,8 +3,9 @@ query GetFilmsQuery {
     id
     name
     dateAdded
-    isEnglishLanguage,
+    isEnglishLanguage
     isFiction
+    isClareFriendly
     parentList
   }
 }

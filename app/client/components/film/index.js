@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
 import { Mutation } from 'react-apollo'
+import classnames from 'classnames'
 import Button from '../button'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
@@ -16,13 +17,14 @@ const actions = ['openModal']
 class Film extends Component {
   render () {
     const { showMoveFilmButton, showDownloadButtons, film } = this.props
-    const { name, isEnglishLanguage, isFiction, dateAdded } = film
+    const { name, isEnglishLanguage, isFiction, isClareFriendly, dateAdded } = film
     const language = isEnglishLanguage ? 'English language' : 'Foreign language'
     const type = isFiction ? 'fiction' : 'documentary'
     const date = dateAdded || '(not known)'
+    const className = classnames('Film', { 'is-clareFriendly': isClareFriendly })
 
     return (
-      <li className='Film'>
+      <li className={className}>
         <div className='Film-section'>
           <div className='Film-descriptorsWrapper'>
             <div>

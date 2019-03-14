@@ -5,6 +5,7 @@ mutation UpdateFilm ($id: ID!, $input: UpdateFilmInput!) {
     dateAdded
     isEnglishLanguage
     isFiction
+    isClareFriendly
     parentList
   }
 }
