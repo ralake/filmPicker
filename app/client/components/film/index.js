@@ -90,7 +90,10 @@ class Film extends Component {
     updateFilm({
       variables: {
         id: film.id,
-        input: { parentList: 'WATCH_LIST' }
+        input: {
+          parentList: 'WATCH_LIST',
+          dateAdded: new Date().toDateString()
+        }
       }
     })
   }
