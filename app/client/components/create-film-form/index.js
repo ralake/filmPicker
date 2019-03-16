@@ -58,6 +58,7 @@ class CreateFilmForm extends Component {
     return {
       isFiction: true,
       isEnglishLanguage: true,
+      isClareFriendly: false,
       name: ''
     }
   }
