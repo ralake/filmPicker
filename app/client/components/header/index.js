@@ -44,6 +44,7 @@ class Header extends Component {
       <Query
         query={PickFilmQuery}
         variables={{ input: pickFilmCriteria }}
+        fetchPolicy='no-cache'
       >
         {({ loading, error, data }) => {
           if (loading || error) return null

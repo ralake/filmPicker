@@ -74,6 +74,8 @@ async function pick (type, filter) {
   const chosenFilms = type === 'RANDOM'
     ? randomFilms
     : filteredFilms
+  console.log('TYPE', type)
+  console.log(_.orderBy(chosenFilms, ['dateAdded'], 'asc'))
   return _.first(_.orderBy(chosenFilms, ['dateAdded'], 'asc'))
 }
 
