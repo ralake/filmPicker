@@ -67,7 +67,7 @@ async function setFilmById (id, film) {
 }
 
 async function pick (type, filter) {
-  const films = await get()
+  const films = (await get()).filter(film => film.parentList === 'WATCH_LIST')
   const filteredFilms = filterFilms(films, filter)
   const randomFilmIndices = getRandomIndices(filteredFilms)
   const randomFilms = randomFilmIndices.map(index => filteredFilms[index])
