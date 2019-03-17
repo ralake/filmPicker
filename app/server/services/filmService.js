@@ -89,7 +89,7 @@ function getRandomIndices (input, chosen = []) {
 
 function filterFilms (films, filterCriteria) {
   const { includeDocumentaries, includeForeignLanguageFilms } = filterCriteria
-  let filteredFilms = _.values(films)
+  let filteredFilms = films
 
   if (!includeDocumentaries) filteredFilms = filteredFilms.filter(film => film.isFiction)
   if (!includeForeignLanguageFilms) filteredFilms = filteredFilms.filter(film => film.isEnglishLanguage)
