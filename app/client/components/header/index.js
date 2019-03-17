@@ -47,6 +47,7 @@ class Header extends Component {
         fetchPolicy='no-cache'
       >
         {({ loading, error, data }) => {
+          console.log(loading, error, data)
           if (loading || error) return null
           const { pickFilm: pickedFilm } = data
           return (
