@@ -72,7 +72,7 @@ class FilmPicker extends Component {
         <UpdateFilmForm film={films.find(film => film.id === data.id)} />
       ),
       pickFilmForm: data => (
-        <PickFilmForm />
+        <PickFilmForm films={films} />
       ),
       loginForm: data => (
         <LoginForm />

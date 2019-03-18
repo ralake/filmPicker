@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'tiny-atom/react'
-import { Query } from 'react-apollo'
 import omit from 'lodash-es/omit'
 import Button from '../button'
-import PickFilmQuery from '../../graphql/PickFilmQuery.graphql'
 import './header.css'
 
 function map (state) {
   return {
-    pickFilmCriteria: state.pickFilmCriteria
+    pickedFilm: state.pickedFilm
   }
 }
 
@@ -37,25 +35,14 @@ class Header extends Component {
   }
 
   renderPickedFilm () {
-    const { pickFilmCriteria } = this.props
-    if (!pickFilmCriteria) return null
+    const { pickedFilm } = this.props
+    if (!pickedFilm) return null
 
     return (
-      <Query
-        query={PickFilmQuery}
-        variables={{ input: pickFilmCriteria }}
-      >
-        {({ loading, error, data }) => {
-          if (loading || error) return null
-          const { pickFilm: pickedFilm } = data
-          return (
-            <p className='Header-pickedFilm'>
-              <span>Time to watch </span>
-              <span className='Header-pickedFilmName'>{pickedFilm.name}</span>!
-            </p>
-          )
-        }}
-      </Query>
+      <p className='Header-pickedFilm'>
+        <span>Time to watch </span>
+        <span className='Header-pickedFilmName'>{pickedFilm.name}</span>!
+      </p>
     )
   }
 

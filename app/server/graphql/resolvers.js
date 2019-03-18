@@ -4,11 +4,6 @@ const resolvers = {
   films (args) {
     return filmService.get()
   },
-  pickFilm (args) {
-    const { input } = args
-    const { type, filter } = input
-    return filmService.pick(type, filter)
-  },
   createFilm (args) {
     const { input } = args
     return filmService.create(input)

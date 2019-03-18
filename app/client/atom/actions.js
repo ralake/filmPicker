@@ -1,4 +1,5 @@
 import userService from '../lib/user-service'
+import chooseFilm from '../lib/pickFilm'
 
 function updateUser ({ get, set }, payload) {
   set({
@@ -29,14 +30,15 @@ function closeModal ({ set }) {
 }
 
 function pickFilm ({ set }, payload) {
+  const { films, type, filter } = payload
   set({
-    pickFilmCriteria: payload
+    pickedFilm: chooseFilm(films, type, filter)
   })
 }
 
 function clearPickedFilm ({ set }) {
   set({
-    pickFilmCriteria: null
+    pickedFilm: null
   })
 }
 

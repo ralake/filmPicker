@@ -54,10 +54,10 @@ class PickFilmForm extends Component {
   }
 
   pickFilm (type) {
-    const { pickFilm } = this.props
+    const { pickFilm, films } = this.props
     const { filter } = this.state
 
-    pickFilm({ type, filter })
+    pickFilm({ films, type, filter })
     this.handleClose()
   }
 
