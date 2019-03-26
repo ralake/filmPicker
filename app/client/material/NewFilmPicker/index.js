@@ -6,6 +6,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import blue from '@material-ui/core/colors/blue'
 
 import FilmList from '../FilmList'
+import Snackbar from '../Snackbar'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 import Header from '../Header'
 
@@ -27,6 +28,7 @@ class FilmPicker extends Component {
             return (
               <Fragment>
                 <Header films={films} loading={loading} />
+                <Snackbar />
                 <Grid container spacing={24}>
                   <FilmList films={this.getFilms(films, 'WATCH_LIST')} />
                   <FilmList films={this.getFilms(films, 'WISH_LIST')} />

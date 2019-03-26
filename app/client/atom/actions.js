@@ -1,5 +1,4 @@
 import userService from '../lib/user-service'
-import chooseFilm from '../lib/pickFilm'
 
 function updateUser ({ get, set }, payload) {
   set({
@@ -29,16 +28,14 @@ function closeModal ({ set }) {
   set({ modal: null })
 }
 
-function pickFilm ({ set }, payload) {
-  const { films, type, filter } = payload
-  set({
-    pickedFilm: chooseFilm(films, type, filter)
-  })
-}
+/* NEW */
 
-function clearPickedFilm ({ set }) {
+function showSnackbar ({ get, set }, payload) {
   set({
-    pickedFilm: null
+    snackbar: {
+      ...get().snackbar,
+      ...payload
+    }
   })
 }
 
@@ -47,6 +44,5 @@ export default {
   closeModal,
   submitLoginForm,
   updateUser,
-  pickFilm,
-  clearPickedFilm
+  showSnackbar
 }

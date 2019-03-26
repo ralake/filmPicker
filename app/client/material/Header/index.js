@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import omit from 'lodash-es/omit'
+import { connect } from 'tiny-atom/react'
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -8,6 +9,9 @@ import AddIcon from '@material-ui/icons/Add'
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import TheatersIcon from '@material-ui/icons/Theaters'
 import { withStyles } from '@material-ui/core/styles'
+import pickFilms from '../../lib/pickFilms'
+
+const actions = ['showSnackbar']
 
 const styles = {
   title: {
@@ -47,6 +51,7 @@ class Header extends Component {
         </IconButton>
         <IconButton
           disabled={disabled}
+          onClick={() => this.pickFilms()}
         >
           <TheatersIcon />
         </IconButton>
@@ -58,6 +63,27 @@ class Header extends Component {
         </IconButton>
       </Fragment>
     )
+  }
+
+  pickFilms () {
+    const { films: allFilms, showSnackbar } = this.props
+    const films = allFilms.filter(film => film.parentList === 'WATCH_LIST')
+    const { oldestFilm, randomFilm } = pickFilms(films)
+
+    const Film = (name) => (
+      <Typography
+        inline
+        variant='body2'
+        color='primary'
+      >
+        {name}
+      </Typography>
+    )
+
+    showSnackbar({
+      open: true,
+      message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>
+    })
   }
 
   exportFilms () {
@@ -82,4 +108,6 @@ class Header extends Component {
   }
 }
 
-export default withStyles(styles)(Header)
+export default withStyles(styles)(
+  connect(null, actions)(Header)
+)
