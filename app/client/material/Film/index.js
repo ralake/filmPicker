@@ -1,22 +1,23 @@
 import React, { Component, Fragment } from 'react'
 import { Mutation } from 'react-apollo'
+import { connect } from 'tiny-atom/react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import CreateIcon from '@material-ui/icons/Create'
-import SendIcon from '@material-ui/icons/Send'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
-import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 
 // TODO snackbars for success and failure of edit, move and delete
 
-export default class Film extends Component {
+const actions = ['showFilmForm']
+
+class Film extends Component {
   constructor () {
     super()
     this.state = {}
@@ -25,8 +26,12 @@ export default class Film extends Component {
   render () {
     const { film } = this.props
     const { anchor } = this.state
-    const { isFiction, isEnglishLanguage, name } = film
-    const descriptor = `${isEnglishLanguage ? 'English' : 'Foreign'} language ${isFiction ? 'fiction' : 'documentary'}`
+    const { isFiction, isEnglishLanguage, name, dateAdded } = film
+    const descriptor = `${
+      isEnglishLanguage ? 'English' : 'Foreign'
+    } language ${
+      isFiction ? 'fiction' : 'documentary'
+    }${dateAdded !== 'Invalid Date' ? ` - Added ${dateAdded}` : ''}`
 
     return (
       <ListItem>
@@ -54,42 +59,24 @@ export default class Film extends Component {
     return (
       <Fragment>
         {this.renderEditFilmItem()}
-        {this.renderMoveFilmItem()}
         {this.renderDeleteFilmItem()}
       </Fragment>
     )
   }
 
   renderEditFilmItem () {
+    const { film, showFilmForm } = this.props
+
     return (
-      <MenuItem>
+      <MenuItem onClick={() => {
+        this.handleClose()
+        showFilmForm({ show: true, action: 'update', film })
+      }}>
         <ListItemIcon>
           <CreateIcon />
         </ListItemIcon>
         <ListItemText inset primary='Edit' />
       </MenuItem>
-    )
-  }
-
-  renderMoveFilmItem () {
-    const showMoveIcon = this.props.film.parentList === 'WISH_LIST'
-
-    if (!showMoveIcon) return null
-
-    return (
-      <Mutation
-        mutation={UpdateFilmMutation}
-        onCompleted={() => this.handleClose()}
-      >
-        {(updateFilm, { data, loading, error }) => (
-          <MenuItem onClick={() => this.moveFilm(updateFilm)}>
-            <ListItemIcon>
-              <SendIcon />
-            </ListItemIcon>
-            <ListItemText inset primary='Move' />
-          </MenuItem>
-        )}
-      </Mutation>
     )
   }
 
@@ -122,19 +109,6 @@ export default class Film extends Component {
     })
   }
 
-  moveFilm (updateFilm) {
-    const { film } = this.props
-    updateFilm({
-      variables: {
-        id: film.id,
-        input: {
-          parentList: 'WATCH_LIST',
-          dateAdded: new Date().toDateString()
-        }
-      }
-    })
-  }
-
   handleDeletedFilm (cache, deletedFilmId) {
     const { films } = cache.readQuery({ query: GetFilmsQuery })
     cache.writeQuery({
@@ -150,3 +124,5 @@ export default class Film extends Component {
     this.setState({ anchor: null })
   }
 }
+
+export default connect(null, actions)(Film)

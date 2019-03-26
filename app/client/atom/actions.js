@@ -39,9 +39,12 @@ function showSnackbar ({ get, set }, payload) {
   })
 }
 
-function showAddFilmDialog ({ set }, payload) {
+function showFilmForm ({ get, set }, payload) {
   set({
-    showAddFilmDialog: payload.show
+    filmForm: {
+      ...get().filmForm,
+      ...payload
+    }
   })
 }
 
@@ -51,5 +54,5 @@ export default {
   submitLoginForm,
   updateUser,
   showSnackbar,
-  showAddFilmDialog
+  showFilmForm
 }

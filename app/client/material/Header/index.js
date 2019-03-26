@@ -11,7 +11,7 @@ import TheatersIcon from '@material-ui/icons/Theaters'
 import { withStyles } from '@material-ui/core/styles'
 import pickFilms from '../../lib/pickFilms'
 
-const actions = ['showSnackbar', 'showAddFilmDialog']
+const actions = ['showSnackbar', 'showFilmForm']
 
 const styles = {
   title: {
@@ -88,7 +88,16 @@ class Header extends Component {
   }
 
   showAddFilmDialog () {
-    this.props.showAddFilmDialog({ show: true })
+    this.props.showFilmForm({
+      show: true,
+      action: 'create',
+      film: {
+        name: '',
+        isEnglishLanguage: true,
+        isFiction: true,
+        isClareFriendly: false
+      }
+    })
   }
 
   exportFilms () {

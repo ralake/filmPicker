@@ -29,7 +29,6 @@ ReactDOM.render(
   (
     <ApolloProvider client={client}>
       <Provider atom={atom}>
-        {/* <FilmPicker /> */}
         <NewFilmPicker />
       </Provider>
     </ApolloProvider>
