@@ -9,6 +9,7 @@ import FilmList from '../FilmList'
 import Snackbar from '../Snackbar'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 import Header from '../Header'
+import AddFilmDialog from '../AddFilmDialog'
 
 const theme = createMuiTheme({
   palette: {
@@ -23,12 +24,13 @@ class FilmPicker extends Component {
         <Query query={GetFilmsQuery}>
           {({ loading, data, error }) => {
             const { films } = data
-            // handle error with a toast bar
+            // TODO handle error with a toast bar
 
             return (
               <Fragment>
                 <Header films={films} loading={loading} />
                 <Snackbar />
+                <AddFilmDialog />
                 <Grid container spacing={24}>
                   <FilmList films={this.getFilms(films, 'WATCH_LIST')} />
                   <FilmList films={this.getFilms(films, 'WISH_LIST')} />

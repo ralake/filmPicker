@@ -11,7 +11,7 @@ import TheatersIcon from '@material-ui/icons/Theaters'
 import { withStyles } from '@material-ui/core/styles'
 import pickFilms from '../../lib/pickFilms'
 
-const actions = ['showSnackbar']
+const actions = ['showSnackbar', 'showAddFilmDialog']
 
 const styles = {
   title: {
@@ -46,6 +46,7 @@ class Header extends Component {
       <Fragment>
         <IconButton
           disabled={disabled}
+          onClick={() => this.showAddFilmDialog()}
         >
           <AddIcon />
         </IconButton>
@@ -84,6 +85,10 @@ class Header extends Component {
       open: true,
       message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>
     })
+  }
+
+  showAddFilmDialog () {
+    this.props.showAddFilmDialog({ show: true })
   }
 
   exportFilms () {

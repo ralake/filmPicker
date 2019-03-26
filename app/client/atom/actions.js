@@ -39,10 +39,17 @@ function showSnackbar ({ get, set }, payload) {
   })
 }
 
+function showAddFilmDialog ({ set }, payload) {
+  set({
+    showAddFilmDialog: payload.show
+  })
+}
+
 export default {
   openModal,
   closeModal,
   submitLoginForm,
   updateUser,
-  showSnackbar
+  showSnackbar,
+  showAddFilmDialog
 }
