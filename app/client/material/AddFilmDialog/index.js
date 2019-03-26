@@ -150,6 +150,9 @@ class AddFilmDialog extends Component {
   }
 
   renderActions (createFilm) {
+    const { film } = this.state
+    const disabled = !film.name || !film.parentList
+
     return (
       <DialogActions>
         <Button
@@ -161,6 +164,7 @@ class AddFilmDialog extends Component {
         <Button
           onClick={() => this.addFilm(createFilm)}
           color='primary'
+          disabled={disabled}
         >
           Add film
         </Button>
