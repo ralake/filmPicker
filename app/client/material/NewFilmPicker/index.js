@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import sortBy from 'lodash-es/sortBy'
 import { Query } from 'react-apollo'
+import Grid from '@material-ui/core/Grid'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import blue from '@material-ui/core/colors/blue'
 
+import FilmList from '../FilmList'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 import Header from '../Header'
 
@@ -22,11 +25,25 @@ class FilmPicker extends Component {
             // handle error with a toast bar
 
             return (
-              <Header films={films} loading={loading} />
+              <Fragment>
+                <Header films={films} loading={loading} />
+                <Grid container spacing={24}>
+                  <FilmList films={this.getFilms(films, 'WATCH_LIST')} />
+                  <FilmList films={this.getFilms(films, 'WISH_LIST')} />
+                </Grid>
+              </Fragment>
             )
           }}
         </Query>
       </MuiThemeProvider>
+    )
+  }
+
+  getFilms (films, list) {
+    if (!films) return
+    return sortBy(
+      films.filter(film => film.parentList === list),
+      'name'
     )
   }
 }
