@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import omit from 'lodash-es/omit'
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -18,9 +19,7 @@ class Header extends Component {
   render () {
     const { classes } = this.props
     return (
-      <AppBar
-        color='primary'
-      >
+      <AppBar>
         <Toolbar>
           <Typography
             variant='h6'
@@ -36,19 +35,50 @@ class Header extends Component {
   }
 
   renderButtons () {
+    const { films, loading } = this.props
+    const disabled = !films || loading
+
     return (
       <Fragment>
-        <IconButton>
+        <IconButton
+          disabled={disabled}
+        >
           <AddIcon />
         </IconButton>
-        <IconButton>
+        <IconButton
+          disabled={disabled}
+        >
           <TheatersIcon />
         </IconButton>
-        <IconButton>
+        <IconButton
+          disabled={disabled}
+          onClick={() => this.exportFilms()}
+        >
           <CloudDownloadIcon />
         </IconButton>
       </Fragment>
     )
+  }
+
+  exportFilms () {
+    const films = this.props.films.reduce(
+      (memo, film) => ({
+        ...memo,
+        [film.id]: omit(film, ['__typename'])
+      }),
+      {}
+    )
+
+    const encodedFilms = encodeURIComponent(JSON.stringify({ films }))
+    const encodedData = `text/json;charset=utf-8,${encodedFilms}`
+    const downloadLink = document.createElement('a')
+
+    downloadLink.display = 'hidden'
+    downloadLink.setAttribute('href', `data:${encodedData}`)
+    downloadLink.setAttribute('download', 'filmPickerExport.json')
+    document.body.appendChild(downloadLink)
+    downloadLink.click()
+    document.body.removeChild(downloadLink)
   }
 }
 
