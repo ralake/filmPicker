@@ -4,10 +4,12 @@ import { connect } from 'tiny-atom/react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Chip from '@material-ui/core/Chip'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import CreateIcon from '@material-ui/icons/Create'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
+import FaceIcon from '@material-ui/icons/Face'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
@@ -26,7 +28,7 @@ class Film extends Component {
   render () {
     const { film } = this.props
     const { anchor } = this.state
-    const { isFiction, isEnglishLanguage, name, dateAdded } = film
+    const { isFiction, isEnglishLanguage, isClareFriendly, name, dateAdded } = film
     const descriptor = `${
       isEnglishLanguage ? 'English' : 'Foreign'
     } language ${
@@ -39,6 +41,14 @@ class Film extends Component {
           primary={name}
           secondary={descriptor}
         />
+        {isClareFriendly && (
+          <Chip
+            label='Clare friendly'
+            color='primary'
+            icon={<FaceIcon />}
+            variant='outlined'
+          />
+        )}
         <IconButton>
           <MoreHoriz
             onClick={(e) => this.setState({ anchor: e.currentTarget })}
