@@ -1,52 +1,27 @@
-import userService from '../lib/user-service'
-import chooseFilm from '../lib/pickFilm'
-
-function updateUser ({ get, set }, payload) {
+function showSnackbar ({ get, set }, payload) {
   set({
-    user: {
-      ...get().user || {},
+    snackbar: {
+      ...get().snackbar,
       ...payload
     }
   })
 }
 
-function submitLoginForm ({ get, set }, payload) {
-  const { email, password } = payload
-  userService.login(email, password)
-}
-
-function openModal ({ set }, payload) {
-  const { type, data } = payload
+function showFilmForm ({ get, set }, payload) {
   set({
-    modal: {
-      type,
-      data
+    filmForm: {
+      ...get().filmForm,
+      ...payload
     }
   })
 }
 
-function closeModal ({ set }) {
-  set({ modal: null })
-}
-
-function pickFilm ({ set }, payload) {
-  const { films, type, filter } = payload
-  set({
-    pickedFilm: chooseFilm(films, type, filter)
-  })
-}
-
-function clearPickedFilm ({ set }) {
-  set({
-    pickedFilm: null
-  })
+function showLoginForm ({ set }, payload) {
+  set({ showLoginForm: payload.show })
 }
 
 export default {
-  openModal,
-  closeModal,
-  submitLoginForm,
-  updateUser,
-  pickFilm,
-  clearPickedFilm
+  showLoginForm,
+  showSnackbar,
+  showFilmForm
 }

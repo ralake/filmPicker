@@ -1,101 +1,151 @@
-/* globals SD_DOWNLOAD_URL, HD_DOWNLOAD_URL */
+/* globals HD_DOWNLOAD_URL */
 
-import React, { Component } from 'react'
-import { connect } from 'tiny-atom/react'
+import React, { Component, Fragment } from 'react'
 import { Mutation } from 'react-apollo'
-import classnames from 'classnames'
-import Button from '../button'
-import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
+import { connect } from 'tiny-atom/react'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Chip from '@material-ui/core/Chip'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/DeleteForever'
+import CreateIcon from '@material-ui/icons/Create'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import OpenInNewIcon from '@material-ui/icons/OpenInNew'
+import FaceIcon from '@material-ui/icons/Face'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
-import './film.css'
 
-const map = () => {}
+// TODO snackbars for success and failure of edit, move and delete
 
-const actions = ['openModal']
+const actions = ['showFilmForm']
 
 class Film extends Component {
+  constructor () {
+    super()
+    this.state = {}
+  }
+
   render () {
-    const { showMoveFilmButton, showDownloadButtons, film } = this.props
-    const { name, isEnglishLanguage, isFiction, isClareFriendly, dateAdded } = film
-    const language = isEnglishLanguage ? 'English language' : 'Foreign language'
-    const type = isFiction ? 'fiction' : 'documentary'
-    const date = dateAdded || '(not known)'
-    const className = classnames('Film', { 'is-clareFriendly': isClareFriendly })
+    const { film } = this.props
+    const descriptor = this.getDescriptor()
 
     return (
-      <li className={className}>
-        <div className='Film-section'>
-          <div className='Film-descriptorsWrapper'>
-            <div>
-              <span className='Film-title'>{name}</span>
-              <span className='Film-descriptors'> ({language} {type})</span>
-            </div>
-          </div>
-          <div className='Film-btnWrapper'>
-            { showMoveFilmButton && (
-              <Mutation
-                mutation={UpdateFilmMutation}
-              >
-                {(updateFilm, { data, loading, error }) => (
-                  <Button size='small' onClick={() => this.moveFilm(updateFilm)} text='Move' />
-                )}
-              </Mutation>
-            )}
-            <Button size='small' onClick={() => this.openUpdateFilmModal(film)} text='Edit' />
-            <Mutation
-              mutation={DeleteFilmMutation}
-              update={(cache, { data: { deleteFilm: deletedFilm } }) => {
-                this.handleDeletedFilm(cache, deletedFilm.id)
-              }}
-            >
-              {(deleteFilm, { data, loading, error }) => (
-                <Button size='small' onClick={() => this.deleteFilm(deleteFilm)} text='Remove' />
-              )}
-            </Mutation>
-          </div>
-        </div>
-        <div className='Film-divider' />
-        <div className='Film-section'>
-          <span className='Film-dateAdded'>Added {date}</span>
-          {showDownloadButtons && (
-            <div>
-              <Button
-                onClick={() => this.search({ hd: false })}
-                text='Download SD'
-                size='small'
-              />
-              <Button
-                onClick={() => this.search({ hd: true })}
-                text='Download HD'
-                size='small'
-              />
-            </div>
-          )}
-        </div>
-      </li>
+      <ListItem>
+        <ListItemText
+          primary={film.name}
+          secondary={descriptor}
+        />
+        {this.renderClareFriendlyChip()}
+        {this.renderDownloadButton()}
+        {this.renderMenu()}
+      </ListItem>
     )
   }
 
-  search ({ hd }) {
+  renderClareFriendlyChip () {
+    const { isClareFriendly, parentList } = this.props.film
+    if (!isClareFriendly || parentList === 'WISH_LIST') return null
+
+    return (
+      <Chip
+        label='Clare friendly'
+        color='primary'
+        icon={<FaceIcon />}
+        variant='outlined'
+      />
+    )
+  }
+
+  renderDownloadButton () {
+    const { parentList } = this.props.film
+    if (parentList === 'WATCH_LIST') return null
+
+    return (
+      <IconButton onClick={() => this.search()}>
+        <OpenInNewIcon />
+      </IconButton>
+    )
+  }
+
+  renderMenu () {
+    const { anchor } = this.state
+    return (
+      <Fragment>
+        <IconButton onClick={(e) => this.setState({ anchor: e.currentTarget })}>
+          <MoreHorizIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchor}
+          open={Boolean(anchor)}
+          onClose={() => this.handleClose()}
+        >
+          {this.renderMenuItems()}
+        </Menu>
+      </Fragment>
+    )
+  }
+
+  getDescriptor () {
+    const { isEnglishLanguage, isFiction, dateAdded } = this.props.film
+    return `${
+      isEnglishLanguage ? 'English' : 'Foreign'
+    } language ${
+      isFiction ? 'fiction' : 'documentary'
+    }${dateAdded !== 'Invalid Date' ? ` - Added ${dateAdded}` : ''}`
+  }
+
+  search () {
     const film = window.encodeURIComponent(this.props.film.name)
-    const url = hd
-      ? HD_DOWNLOAD_URL.replace('{{film}}', film)
-      : SD_DOWNLOAD_URL.replace('{{film}}', film)
+    const url = HD_DOWNLOAD_URL.replace('{{film}}', film)
     window.open(url, '_blank')
   }
 
-  moveFilm (updateFilm) {
-    const { film } = this.props
-    updateFilm({
-      variables: {
-        id: film.id,
-        input: {
-          parentList: 'WATCH_LIST',
-          dateAdded: new Date().toDateString()
-        }
-      }
-    })
+  renderMenuItems () {
+    return (
+      <Fragment>
+        {this.renderEditFilmItem()}
+        {this.renderDeleteFilmItem()}
+      </Fragment>
+    )
+  }
+
+  renderEditFilmItem () {
+    const { film, showFilmForm } = this.props
+
+    return (
+      <MenuItem onClick={() => {
+        this.handleClose()
+        showFilmForm({ show: true, action: 'update', film })
+      }}>
+        <ListItemIcon>
+          <CreateIcon />
+        </ListItemIcon>
+        <ListItemText inset primary='Edit' />
+      </MenuItem>
+    )
+  }
+
+  renderDeleteFilmItem () {
+    return (
+      <Mutation
+        mutation={DeleteFilmMutation}
+        update={(cache, { data: { deleteFilm: deletedFilm } }) => {
+          this.handleDeletedFilm(cache, deletedFilm.id)
+        }}
+      >
+        {(deleteFilm, { data, loading, error }) => (
+          <MenuItem onClick={() => this.deleteFilm(deleteFilm)}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText inset primary='Delete' />
+          </MenuItem>
+        )}
+      </Mutation>
+    )
   }
 
   deleteFilm (deleteFilm) {
@@ -115,15 +165,12 @@ class Film extends Component {
         films: films.filter(f => f.id !== deletedFilmId)
       }
     })
+    this.handleClose()
   }
 
-  openUpdateFilmModal () {
-    const { film, openModal } = this.props
-    openModal({
-      type: 'updateFilmForm',
-      data: { id: film.id }
-    })
+  handleClose () {
+    this.setState({ anchor: null })
   }
 }
 
-export default connect(map, actions)(Film)
+export default connect(null, actions)(Film)
