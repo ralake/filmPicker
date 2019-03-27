@@ -6,16 +6,25 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
+import EjectIcon from '@material-ui/icons/Eject'
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import TheatersIcon from '@material-ui/icons/Theaters'
 import { withStyles } from '@material-ui/core/styles'
+
 import pickFilms from '../../lib/pickFilms'
+import user from '../../lib/user'
 
 const actions = ['showSnackbar', 'showFilmForm']
 
 const styles = {
   title: {
     flexGrow: 1
+  }
+}
+
+function map (state) {
+  return {
+    userLoggedIn: !state.showLoginForm
   }
 }
 
@@ -39,8 +48,8 @@ class Header extends Component {
   }
 
   renderButtons () {
-    const { films, loading } = this.props
-    const disabled = !films || loading
+    const { films, loading, userLoggedIn } = this.props
+    const disabled = !films || loading || !userLoggedIn
 
     return (
       <Fragment>
@@ -64,6 +73,13 @@ class Header extends Component {
           onClick={() => this.exportFilms()}
         >
           <CloudDownloadIcon />
+        </IconButton>
+        <IconButton
+          color='inherit'
+          disabled={disabled}
+          onClick={() => user.logout()}
+        >
+          <EjectIcon />
         </IconButton>
       </Fragment>
     )
@@ -126,5 +142,5 @@ class Header extends Component {
 }
 
 export default withStyles(styles)(
-  connect(null, actions)(Header)
+  connect(map, actions)(Header)
 )

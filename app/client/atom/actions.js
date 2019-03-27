@@ -1,21 +1,3 @@
-import userService from '../lib/user-service'
-
-function updateUser ({ get, set }, payload) {
-  set({
-    user: {
-      ...get().user || {},
-      ...payload
-    }
-  })
-}
-
-function submitLoginForm ({ get, set }, payload) {
-  const { email, password } = payload
-  userService.login(email, password)
-}
-
-/* NEW */
-
 function showSnackbar ({ get, set }, payload) {
   set({
     snackbar: {
@@ -34,9 +16,12 @@ function showFilmForm ({ get, set }, payload) {
   })
 }
 
+function showLoginForm ({ set }, payload) {
+  set({ showLoginForm: payload.show })
+}
+
 export default {
-  submitLoginForm,
-  updateUser,
+  showLoginForm,
   showSnackbar,
   showFilmForm
 }

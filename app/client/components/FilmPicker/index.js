@@ -10,6 +10,7 @@ import Snackbar from '../Snackbar'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 import Header from '../Header'
 import FilmFormDialog from '../FilmFormDialog'
+import LoginFormDialog from '../LoginFormDialog'
 
 const theme = createMuiTheme({
   palette: {
@@ -31,6 +32,7 @@ class FilmPicker extends Component {
                 <Header films={films} loading={loading} />
                 <Snackbar />
                 <FilmFormDialog />
+                <LoginFormDialog />
                 <Grid container spacing={24}>
                   <FilmList films={this.getFilms(films, 'WATCH_LIST')} />
                   <FilmList films={this.getFilms(films, 'WISH_LIST')} />

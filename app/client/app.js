@@ -5,7 +5,7 @@ import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 import * as firebase from 'firebase'
 import get from 'lodash-es/get'
-import userService from './lib/user-service'
+import user from './lib/user'
 import FilmPicker from './components/FilmPicker'
 import atom from './atom'
 import firebaseConfig from './firebaseConfig'
@@ -14,13 +14,11 @@ const client = new ApolloClient()
 
 firebase.initializeApp(firebaseConfig)
 
-userService.onLoginChange(appUser => {
+user.onLoginChange(appUser => {
   const { dispatch } = atom
   const loggedIn = get(appUser, 'isAnonymous') === false
-  const user = { loggedIn }
 
-  dispatch('updateUser', user)
-  if (!user.loggedIn) dispatch('openModal', { type: 'loginForm' })
+  if (!loggedIn) dispatch('showLoginForm', { show: true })
 })
 
 ReactDOM.render(
