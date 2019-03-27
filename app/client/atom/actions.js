@@ -14,20 +14,6 @@ function submitLoginForm ({ get, set }, payload) {
   userService.login(email, password)
 }
 
-function openModal ({ set }, payload) {
-  const { type, data } = payload
-  set({
-    modal: {
-      type,
-      data
-    }
-  })
-}
-
-function closeModal ({ set }) {
-  set({ modal: null })
-}
-
 /* NEW */
 
 function showSnackbar ({ get, set }, payload) {
@@ -49,8 +35,6 @@ function showFilmForm ({ get, set }, payload) {
 }
 
 export default {
-  openModal,
-  closeModal,
   submitLoginForm,
   updateUser,
   showSnackbar,

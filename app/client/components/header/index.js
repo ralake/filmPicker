@@ -1,55 +1,106 @@
-import React, { Component } from 'react'
-import { connect } from 'tiny-atom/react'
+import React, { Component, Fragment } from 'react'
 import omit from 'lodash-es/omit'
-import Button from '../button'
-import './header.css'
+import { connect } from 'tiny-atom/react'
+import AppBar from '@material-ui/core/AppBar'
+import Typography from '@material-ui/core/Typography'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import AddIcon from '@material-ui/icons/Add'
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
+import TheatersIcon from '@material-ui/icons/Theaters'
+import { withStyles } from '@material-ui/core/styles'
+import pickFilms from '../../lib/pickFilms'
 
-function map (state) {
-  return {
-    pickedFilm: state.pickedFilm
+const actions = ['showSnackbar', 'showFilmForm']
+
+const styles = {
+  title: {
+    flexGrow: 1
   }
 }
 
-const actions = ['openModal', 'clearPickedFilm']
-
 class Header extends Component {
   render () {
+    const { classes } = this.props
     return (
-      <div className='Header'>
-        <h1 className='Header-title'>Film Picker</h1>
-        {this.renderPickedFilm()}
-        <div>
-          <Button
-            size='large'
-            onClick={() => this.exportFilms()}
-            text='Export films'
-          />
-          <Button
-            size='large'
-            onClick={() => this.openPickFilmModal()}
-            text='Pick film'
-          />
-        </div>
-      </div>
+      <AppBar>
+        <Toolbar>
+          <Typography
+            variant='h6'
+            color='inherit'
+            className={classes.title}
+          >
+            Film picker
+          </Typography>
+          {this.renderButtons()}
+        </Toolbar>
+      </AppBar>
     )
   }
 
-  renderPickedFilm () {
-    const { pickedFilm } = this.props
-    if (!pickedFilm) return null
+  renderButtons () {
+    const { films, loading } = this.props
+    const disabled = !films || loading
 
     return (
-      <p className='Header-pickedFilm'>
-        <span>Time to watch </span>
-        <span className='Header-pickedFilmName'>{pickedFilm.name}</span>!
-      </p>
+      <Fragment>
+        <IconButton
+          color='inherit'
+          disabled={disabled}
+          onClick={() => this.showAddFilmDialog()}
+        >
+          <AddIcon />
+        </IconButton>
+        <IconButton
+          color='inherit'
+          disabled={disabled}
+          onClick={() => this.pickFilms()}
+        >
+          <TheatersIcon />
+        </IconButton>
+        <IconButton
+          color='inherit'
+          disabled={disabled}
+          onClick={() => this.exportFilms()}
+        >
+          <CloudDownloadIcon />
+        </IconButton>
+      </Fragment>
     )
   }
 
-  openPickFilmModal () {
-    const { clearPickedFilm, openModal } = this.props
-    clearPickedFilm()
-    openModal({ type: 'pickFilmForm' })
+  pickFilms () {
+    const { films: allFilms, showSnackbar } = this.props
+    const films = allFilms.filter(film => film.parentList === 'WATCH_LIST')
+    const { oldestFilm, randomFilm } = pickFilms(films)
+
+    const Film = (name) => (
+      <Typography
+        inline
+        variant='body2'
+        color='primary'
+      >
+        {name}
+      </Typography>
+    )
+
+    showSnackbar({
+      open: true,
+      message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>
+    })
+  }
+
+  showAddFilmDialog () {
+    this.props.showFilmForm({
+      show: true,
+      action: 'create',
+      film: {
+        name: '',
+        isEnglishLanguage: true,
+        isFiction: true,
+        isClareFriendly: false
+      }
+    })
   }
 
   exportFilms () {
@@ -74,4 +125,6 @@ class Header extends Component {
   }
 }
 
-export default connect(map, actions)(Header)
+export default withStyles(styles)(
+  connect(null, actions)(Header)
+)

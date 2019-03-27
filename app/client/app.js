@@ -6,11 +6,9 @@ import { ApolloProvider } from 'react-apollo'
 import * as firebase from 'firebase'
 import get from 'lodash-es/get'
 import userService from './lib/user-service'
-// import FilmPicker from './components/film-picker'
-import NewFilmPicker from './material/NewFilmPicker'
+import FilmPicker from './components/FilmPicker'
 import atom from './atom'
 import firebaseConfig from './firebaseConfig'
-import './app.css'
 
 const client = new ApolloClient()
 
@@ -29,7 +27,7 @@ ReactDOM.render(
   (
     <ApolloProvider client={client}>
       <Provider atom={atom}>
-        <NewFilmPicker />
+        <FilmPicker />
       </Provider>
     </ApolloProvider>
   ),

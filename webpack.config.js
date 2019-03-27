@@ -12,8 +12,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      SD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrls.sd')),
-      HD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrls.hd')),
+      HD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrl')),
       FIREBASE_API_KEY: JSON.stringify(config.get('firebase.apiKey'))
     })
   ],
@@ -28,10 +27,6 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(graphql|gql)$/,
