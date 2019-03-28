@@ -1,5 +1,7 @@
 mutation DeleteFilm ($id: ID!) {
   deleteFilm (id: $id) {
     id
+    name
+    parentList
   }
 }

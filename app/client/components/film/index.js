@@ -127,18 +127,18 @@ class Film extends Component {
   }
 
   renderDeleteFilmItem () {
-    const { name, parentList } = this.props.film
-    const list = parentList === 'WISH_LIST'
-      ? 'wish list'
-      : 'watch list'
-
     return (
       <Mutation
         mutation={DeleteFilmMutation}
         update={(cache, { data: { deleteFilm: deletedFilm } }) => {
           this.handleDeletedFilm(cache, deletedFilm.id)
         }}
-        onCompleted={() => {
+        onCompleted={(data) => {
+          const { name, parentList } = data.deleteFilm
+          const list = parentList === 'WISH_LIST'
+            ? 'wish list'
+            : 'watch list'
+
           this.handleClose()
           this.showSnackbar({
             type: 'success',
@@ -146,6 +146,11 @@ class Film extends Component {
           })
         }}
         onError={() => {
+          const { name, parentList } = this.props.film
+          const list = parentList === 'WISH_LIST'
+            ? 'wish list'
+            : 'watch list'
+
           this.handleClose()
           this.showSnackbar({
             type: 'error',
