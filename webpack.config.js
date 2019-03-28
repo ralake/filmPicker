@@ -4,7 +4,11 @@ const config = require('config')
 const APP_DIR = `${__dirname}/app/client`
 const BUILD_DIR = `${__dirname}/public`
 
+const env = process.env.NODE_ENV || 'development'
+
 module.exports = {
+  mode: env,
+  optimization: { minimize: env === 'devlopemnt' },
   entry: `${APP_DIR}/app.js`,
   output: {
     path: BUILD_DIR,

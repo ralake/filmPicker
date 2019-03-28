@@ -24,7 +24,7 @@ function FilmList (props) {
   if (!films || !userLoggedIn) return null
 
   return (
-    <Grid item xs={6}>
+    <Grid item xs>
       <Paper className={classes.paper}>
         <List disablePadding>
           {films.map(film => <Film film={film} />)}
