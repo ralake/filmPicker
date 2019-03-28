@@ -61,7 +61,7 @@ class Film extends Component {
 
   renderDownloadButton () {
     const { film } = this.props
-    if (lists.isWishList(film)) return null
+    if (lists.isWatchList(film)) return null
 
     return (
       <IconButton onClick={() => this.search()}>
