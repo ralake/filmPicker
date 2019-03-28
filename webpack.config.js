@@ -6,9 +6,11 @@ const BUILD_DIR = `${__dirname}/public`
 
 const env = process.env.NODE_ENV || 'development'
 
+console.log(env, env === 'production')
+
 module.exports = {
   mode: env,
-  optimization: { minimize: env === 'developemnt' },
+  optimization: { minimize: env === 'production' },
   entry: `${APP_DIR}/app.js`,
   output: {
     path: BUILD_DIR,
