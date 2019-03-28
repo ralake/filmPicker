@@ -8,7 +8,7 @@ const env = process.env.NODE_ENV || 'development'
 
 module.exports = {
   mode: env,
-  optimization: { minimize: env === 'devlopemnt' },
+  optimization: { minimize: env === 'developemnt' },
   entry: `${APP_DIR}/app.js`,
   output: {
     path: BUILD_DIR,
