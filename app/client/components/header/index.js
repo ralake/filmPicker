@@ -12,6 +12,7 @@ import TheatersIcon from '@material-ui/icons/Theaters'
 import { withStyles } from '@material-ui/core/styles'
 
 import pickFilms from '../../lib/pickFilms'
+import lists from '../../lib/lists'
 import user from '../../lib/user'
 
 const actions = ['showSnackbar', 'showFilmForm']
@@ -87,7 +88,7 @@ class Header extends Component {
 
   pickFilms () {
     const { films: allFilms, showSnackbar } = this.props
-    const films = allFilms.filter(film => film.parentList === 'WATCH_LIST')
+    const films = allFilms.filter(film => lists.isWatchList(film))
     const { oldestFilm, randomFilm } = pickFilms(films)
 
     const Film = (name) => (
@@ -104,7 +105,7 @@ class Header extends Component {
       show: true,
       message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>,
       type: 'info',
-      duration: 6000
+      duration: 5000
     })
   }
 

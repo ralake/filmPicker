@@ -11,6 +11,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Switch from '@material-ui/core/Switch'
 
+import lists from '../../lib/lists'
+
 const actions = ['setFilmAction']
 
 class FilmFormDialog extends Component {
@@ -52,14 +54,14 @@ class FilmFormDialog extends Component {
   }
 
   renderListPicker () {
-    const { parentList } = this.props.film
+    const { film } = this.props
     return (
       <FormGroup row>
         <FormControlLabel
           control={
             <Checkbox
-              checked={parentList === 'WISH_LIST'}
-              onChange={() => this.handleChange({ parentList: 'WISH_LIST' })}
+              checked={lists.isWishList(film)}
+              onChange={() => this.handleChange({ parentList: lists.WISH_LIST })}
               color='primary'
             />
           }
@@ -68,8 +70,8 @@ class FilmFormDialog extends Component {
         <FormControlLabel
           control={
             <Checkbox
-              checked={parentList === 'WATCH_LIST'}
-              onChange={() => this.handleChange({ parentList: 'WATCH_LIST' })}
+              checked={lists.isWatchList(film)}
+              onChange={() => this.handleChange({ parentList: lists.WATCH_LIST })}
               color='primary'
             />
           }

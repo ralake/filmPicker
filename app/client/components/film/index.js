@@ -15,6 +15,8 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew'
 import FaceIcon from '@material-ui/icons/Face'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+
+import lists from '../../lib/lists'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 
@@ -44,8 +46,8 @@ class Film extends Component {
   }
 
   renderClareFriendlyChip () {
-    const { isClareFriendly, parentList } = this.props.film
-    if (!isClareFriendly || parentList === 'WISH_LIST') return null
+    const { film } = this.props
+    if (!film.isClareFriendly || lists.isWishList(film)) return null
 
     return (
       <Chip
@@ -58,8 +60,8 @@ class Film extends Component {
   }
 
   renderDownloadButton () {
-    const { parentList } = this.props.film
-    if (parentList === 'WATCH_LIST') return null
+    const { film } = this.props
+    if (lists.isWishList(film)) return null
 
     return (
       <IconButton onClick={() => this.search()}>
@@ -134,27 +136,23 @@ class Film extends Component {
           this.handleDeletedFilm(cache, deletedFilm.id)
         }}
         onCompleted={(data) => {
-          const { name, parentList } = data.deleteFilm
-          const list = parentList === 'WISH_LIST'
-            ? 'wish list'
-            : 'watch list'
+          const { deleteFilm: deletedFilm } = data
+          const list = lists.toDisplayName(deletedFilm)
 
           this.handleClose()
           this.showSnackbar({
             type: 'success',
-            message: `Deleted ${name} from ${list}!`
+            message: `Deleted ${deletedFilm.name} from ${list}!`
           })
         }}
         onError={() => {
-          const { name, parentList } = this.props.film
-          const list = parentList === 'WISH_LIST'
-            ? 'wish list'
-            : 'watch list'
+          const { film } = this.props
+          const list = lists.toDisplayName(film)
 
           this.handleClose()
           this.showSnackbar({
             type: 'error',
-            message: `Error trying to delete ${name} from ${list}`
+            message: `Error trying to delete ${film.name} from ${list}`
           })
         }}
       >

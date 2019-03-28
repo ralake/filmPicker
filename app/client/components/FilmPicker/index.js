@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import blue from '@material-ui/core/colors/blue'
 
+import lists from '../../lib/lists'
 import FilmList from '../FilmList'
 import Snackbar from '../Snackbar'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
@@ -40,8 +41,8 @@ class FilmPicker extends Component {
                 <FilmFormDialog />
                 <LoginFormDialog />
                 <Grid container spacing={24}>
-                  <FilmList films={this.getFilms(films, 'WATCH_LIST')} />
-                  <FilmList films={this.getFilms(films, 'WISH_LIST')} />
+                  <FilmList films={this.getFilms(films, lists.WATCH_LIST)} />
+                  <FilmList films={this.getFilms(films, lists.WISH_LIST)} />
                 </Grid>
               </Fragment>
             )

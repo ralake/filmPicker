@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo'
 import omit from 'lodash-es/omit'
 import Dialog from '@material-ui/core/Dialog'
 
+import lists from '../../lib/lists'
 import FilmForm from '../FilmForm'
 import CreateFilmMutation from '../../graphql/CreateFilmMutation.graphql'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
@@ -31,26 +32,22 @@ class FilmFormDialog extends Component {
           this.addCreatedFilm(cache, createdFilm)
         },
         onCompletedFn (data) {
-          const { name, parentList } = data.createFilm
-          const list = parentList === 'WISH_LIST'
-            ? 'wish list'
-            : 'watch list'
+          const { createFilm: createdFilm } = data
+          const list = lists.toDisplayName(createdFilm)
 
           this.handleClose()
           this.showSnackbar({
-            message: `Added ${name} to ${list}!`,
+            message: `Added ${createdFilm.name} to ${list}!`,
             type: 'success'
           })
         },
         onErrorFn () {
-          const { name, parentList } = this.state.film
-          const list = parentList === 'WISH_LIST'
-            ? 'wish list'
-            : 'watch list'
+          const { film } = this.state
+          const list = lists.toDisplayName(film)
 
           this.handleClose()
           this.showSnackbar({
-            message: `Error trying to add ${name} to ${list}`,
+            message: `Error trying to add ${film.name} to ${list}`,
             type: 'error'
           })
         }
