@@ -101,8 +101,10 @@ class Header extends Component {
     )
 
     showSnackbar({
-      open: true,
-      message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>
+      show: true,
+      message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>,
+      type: 'info',
+      duration: 6000
     })
   }
 

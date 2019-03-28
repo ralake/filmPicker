@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
+import { connect } from 'tiny-atom/react'
 import sortBy from 'lodash-es/sortBy'
+import get from 'lodash-es/get'
 import { Query } from 'react-apollo'
 import Grid from '@material-ui/core/Grid'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -18,14 +20,18 @@ const theme = createMuiTheme({
   }
 })
 
+const actions = ['showSnackbar']
+
 class FilmPicker extends Component {
   render () {
     return (
       <MuiThemeProvider theme={theme}>
-        <Query query={GetFilmsQuery}>
+        <Query
+          query={GetFilmsQuery}
+          onError={() => this.handleError()}
+        >
           {({ loading, data, error }) => {
-            const { films } = data
-            // TODO handle error with a toast bar
+            const films = get(data, 'films')
 
             return (
               <Fragment>
@@ -52,6 +58,15 @@ class FilmPicker extends Component {
       'name'
     )
   }
+
+  handleError () {
+    this.props.showSnackbar({
+      show: true,
+      duration: 4000,
+      message: 'Error trying to get films',
+      type: 'error'
+    })
+  }
 }
 
-export default FilmPicker
+export default connect(null, actions)(FilmPicker)

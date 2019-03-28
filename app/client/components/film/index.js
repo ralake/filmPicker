@@ -18,9 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 
-// TODO snackbars for success and failure of edit, move and delete
-
-const actions = ['showFilmForm']
+const actions = ['showFilmForm', 'showSnackbar']
 
 class Film extends Component {
   constructor () {
@@ -129,11 +127,30 @@ class Film extends Component {
   }
 
   renderDeleteFilmItem () {
+    const { name, parentList } = this.props.film
+    const list = parentList === 'WISH_LIST'
+      ? 'wish list'
+      : 'watch list'
+
     return (
       <Mutation
         mutation={DeleteFilmMutation}
         update={(cache, { data: { deleteFilm: deletedFilm } }) => {
           this.handleDeletedFilm(cache, deletedFilm.id)
+        }}
+        onCompleted={() => {
+          this.handleClose()
+          this.showSnackbar({
+            type: 'success',
+            message: `Deleted ${name} from ${list}!`
+          })
+        }}
+        onError={() => {
+          this.handleClose()
+          this.showSnackbar({
+            type: 'error',
+            message: `Error trying to delete ${name} from ${list}`
+          })
         }}
       >
         {(deleteFilm, { data, loading, error }) => (
@@ -170,6 +187,15 @@ class Film extends Component {
 
   handleClose () {
     this.setState({ anchor: null })
+  }
+
+  showSnackbar ({ message, type }) {
+    this.props.showSnackbar({
+      show: true,
+      duration: 3000,
+      message,
+      type
+    })
   }
 }
 

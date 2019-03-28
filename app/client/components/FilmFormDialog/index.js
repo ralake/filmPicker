@@ -9,7 +9,7 @@ import CreateFilmMutation from '../../graphql/CreateFilmMutation.graphql'
 import UpdateFilmMutation from '../../graphql/UpdateFilmMutation.graphql'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 
-const actions = ['showFilmForm']
+const actions = ['showFilmForm', 'showSnackbar']
 
 function map (state) {
   const { show, action, film } = state.filmForm
@@ -17,8 +17,8 @@ function map (state) {
 }
 
 class FilmFormDialog extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.mutations = {
       create: {
         mutation: CreateFilmMutation,
@@ -29,6 +29,30 @@ class FilmFormDialog extends Component {
         updateFn (cache, resp) {
           const { createFilm: createdFilm } = resp.data
           this.addCreatedFilm(cache, createdFilm)
+        },
+        onCompletedFn (data) {
+          const { name, parentList } = data.createFilm
+          const list = parentList === 'WISH_LIST'
+            ? 'wish list'
+            : 'watch list'
+
+          this.handleClose()
+          this.showSnackbar({
+            message: `Added ${name} to ${list}!`,
+            type: 'success'
+          })
+        },
+        onErrorFn () {
+          const { name, parentList } = this.state.film
+          const list = parentList === 'WISH_LIST'
+            ? 'wish list'
+            : 'watch list'
+
+          this.handleClose()
+          this.showSnackbar({
+            message: `Error trying to add ${name} to ${list}`,
+            type: 'error'
+          })
         }
       },
       update: {
@@ -46,9 +70,26 @@ class FilmFormDialog extends Component {
             id: updatedFilm.id
           }
         },
-        updateFn () {}
+        updateFn () {},
+        onCompletedFn () {
+          const { name } = this.state.film
+          this.handleClose()
+          this.showSnackbar({
+            message: `${name} successfully updated!`,
+            type: 'success'
+          })
+        },
+        onErrorFn () {
+          const { name } = this.state.film
+          this.handleClose()
+          this.showSnackbar({
+            message: `Error trying to update ${name}`,
+            type: 'error'
+          })
+        }
       }
     }
+
     this.state = {
       film: {}
     }
@@ -72,8 +113,8 @@ class FilmFormDialog extends Component {
       <Mutation
         mutation={this.mutations[action].mutation}
         update={this.mutations[action].updateFn.bind(this)}
-        onCompleted={() => this.handleCompleted()}
-        onError={(e) => this.handleError(e)}
+        onCompleted={this.mutations[action].onCompletedFn.bind(this)}
+        onError={this.mutations[action].onErrorFn.bind(this)}
       >
         {(mutationFn, { data, loading, error }) => {
           return (
@@ -113,6 +154,15 @@ class FilmFormDialog extends Component {
     this.props.showFilmForm({ show: false })
   }
 
+  showSnackbar ({ message, type }) {
+    this.props.showSnackbar({
+      show: true,
+      duration: 3000,
+      message,
+      type
+    })
+  }
+
   addCreatedFilm (cache, createdFilm) {
     const { films } = cache.readQuery({ query: GetFilmsQuery })
     cache.writeQuery({
@@ -121,16 +171,6 @@ class FilmFormDialog extends Component {
         films: films.concat(createdFilm)
       }
     })
-  }
-
-  handleError () {
-    // TODO show snack bar in error
-    this.handleClose()
-  }
-
-  handleCompleted () {
-    // TODO - show snackbar in success
-    this.handleClose()
   }
 }
 

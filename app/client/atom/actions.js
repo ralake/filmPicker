@@ -1,3 +1,4 @@
+/* payload { show, message, duration, type } */
 function showSnackbar ({ get, set }, payload) {
   set({
     snackbar: {
@@ -7,6 +8,7 @@ function showSnackbar ({ get, set }, payload) {
   })
 }
 
+/* payload { show, action, film } */
 function showFilmForm ({ get, set }, payload) {
   set({
     filmForm: {
@@ -16,6 +18,7 @@ function showFilmForm ({ get, set }, payload) {
   })
 }
 
+/* payload { show } */
 function showLoginForm ({ set }, payload) {
   set({ showLoginForm: payload.show })
 }
