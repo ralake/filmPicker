@@ -33,7 +33,7 @@ class Film extends Component {
     const descriptor = this.getDescriptor()
 
     return (
-      <ListItem>
+      <ListItem divider>
         <ListItemText
           primary={film.name}
           secondary={descriptor}

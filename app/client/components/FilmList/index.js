@@ -26,7 +26,7 @@ function FilmList (props) {
   return (
     <Grid item xs={6}>
       <Paper className={classes.paper}>
-        <List>
+        <List disablePadding>
           {films.map(film => <Film film={film} />)}
         </List>
       </Paper>
