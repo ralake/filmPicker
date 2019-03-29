@@ -35,8 +35,6 @@ class FilmFormDialog extends Component {
         onCompletedFn (data) {
           const { createFilm: createdFilm } = data
           const list = lists.toDisplayName(createdFilm)
-
-          this.handleClose()
           this.showSnackbar({
             message: `Added ${createdFilm.name} to ${list}!`,
             type: 'success'
@@ -45,8 +43,6 @@ class FilmFormDialog extends Component {
         onErrorFn () {
           const { film } = this.state
           const list = lists.toDisplayName(film)
-
-          this.handleClose()
           this.showSnackbar({
             message: `Error trying to add ${film.name} to ${list}`,
             type: 'error'
@@ -71,7 +67,6 @@ class FilmFormDialog extends Component {
         updateFn () {},
         onCompletedFn () {
           const { name } = this.state.film
-          this.handleClose()
           this.showSnackbar({
             message: `${name} successfully updated!`,
             type: 'success'
@@ -79,7 +74,6 @@ class FilmFormDialog extends Component {
         },
         onErrorFn () {
           const { name } = this.state.film
-          this.handleClose()
           this.showSnackbar({
             message: `Error trying to update ${name}`,
             type: 'error'
@@ -166,6 +160,8 @@ class FilmFormDialog extends Component {
     this.mutationFn({
       variables: this.mutations[action].getVariables.bind(this)()
     })
+
+    this.handleClose()
   }
 
   handleClose () {
