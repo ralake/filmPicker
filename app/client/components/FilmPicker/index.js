@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'tiny-atom/react'
 import sortBy from 'lodash-es/sortBy'
+import capitalize from 'lodash-es/capitalize'
 import get from 'lodash-es/get'
 import { Query } from 'react-apollo'
 import Grid from '@material-ui/core/Grid'
@@ -41,8 +42,14 @@ class FilmPicker extends Component {
                 <FilmFormDialog />
                 <LoginFormDialog />
                 <Grid container spacing={24}>
-                  <FilmList films={this.getFilms(films, lists.WATCH_LIST)} />
-                  <FilmList films={this.getFilms(films, lists.WISH_LIST)} />
+                  <FilmList
+                    title={capitalize(lists.toDisplayName(lists.WATCH_LIST))}
+                    films={this.getFilms(films, lists.WATCH_LIST)}
+                  />
+                  <FilmList
+                    title={capitalize(lists.toDisplayName(lists.WISH_LIST))}
+                    films={this.getFilms(films, lists.WISH_LIST)}
+                  />
                 </Grid>
               </Fragment>
             )

@@ -3,6 +3,7 @@ import { connect } from 'tiny-atom/react'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import { withStyles } from '@material-ui/core/styles'
 
 import Film from '../Film'
@@ -20,13 +21,16 @@ const styles = theme => ({
 })
 
 function FilmList (props) {
-  const { classes, films, userLoggedIn } = props
+  const { classes, films, userLoggedIn, title } = props
   if (!films || !userLoggedIn) return null
 
   return (
     <Grid item xs>
       <Paper className={classes.paper}>
-        <List disablePadding>
+        <List
+          disablePadding
+          subheader={<ListSubheader>{title}</ListSubheader>}
+        >
           {films.map(film => <Film film={film} />)}
         </List>
       </Paper>

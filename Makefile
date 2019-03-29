@@ -3,7 +3,7 @@ BIN = ./node_modules/.bin
 .PHONY: bootstrap build start deploy
 
 start:
-	nodemon -e js,graphql app
+	nodemon -e js,graphql app/server
 
 build:
 	NODE_ENV=development $(BIN)/webpack -p --progress --colors --watch

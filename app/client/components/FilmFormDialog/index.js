@@ -33,7 +33,7 @@ class FilmFormDialog extends Component {
         },
         onCompletedFn (data) {
           const { createFilm: createdFilm } = data
-          const list = lists.toDisplayName(createdFilm)
+          const list = lists.toDisplayName(createdFilm.parentList)
           this.showSnackbar({
             message: `Added ${createdFilm.name} to ${list}!`,
             type: 'success'
@@ -41,7 +41,7 @@ class FilmFormDialog extends Component {
         },
         onErrorFn () {
           const { film } = this.state
-          const list = lists.toDisplayName(film)
+          const list = lists.toDisplayName(film.parentList)
           this.showSnackbar({
             message: `Error trying to add ${film.name} to ${list}`,
             type: 'error'

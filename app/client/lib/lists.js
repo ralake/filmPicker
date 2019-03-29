@@ -11,7 +11,6 @@ function isWatchList (film) {
   return film.parentList === WATCH_LIST
 }
 
-function toDisplayName (film) {
-  const { parentList } = film
-  return parentList.replace('_', ' ').toLowerCase()
+function toDisplayName (list) {
+  return list.replace('_', ' ').toLowerCase()
 }

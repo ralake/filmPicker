@@ -158,7 +158,7 @@ class Film extends Component {
         }}
         onCompleted={(data) => {
           const { deleteFilm: deletedFilm } = data
-          const list = lists.toDisplayName(deletedFilm)
+          const list = lists.toDisplayName(deletedFilm.parentList)
 
           this.handleClose()
           this.showSnackbar({
@@ -168,7 +168,7 @@ class Film extends Component {
         }}
         onError={() => {
           const { film } = this.props
-          const list = lists.toDisplayName(film)
+          const list = lists.toDisplayName(film.parentList)
 
           this.handleClose()
           this.showSnackbar({
