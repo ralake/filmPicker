@@ -29,7 +29,7 @@ function FilmList (props) {
       <Paper className={classes.paper}>
         <List
           disablePadding
-          subheader={<ListSubheader>{title}</ListSubheader>}
+          subheader={<ListSubheader>{title} ({films.length} films)</ListSubheader>}
         >
           {films.map(film => <Film film={film} />)}
         </List>
