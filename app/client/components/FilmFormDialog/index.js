@@ -20,7 +20,6 @@ function map (state) {
 class FilmFormDialog extends Component {
   constructor (props) {
     super(props)
-    this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this)
     this.mutations = {
       create: {
         mutation: CreateFilmMutation,
@@ -87,14 +86,6 @@ class FilmFormDialog extends Component {
     }
   }
 
-  componentDidMount () {
-    document.addEventListener('keypress', this.handleEnterKeyPress)
-  }
-
-  componentWillUnmount () {
-    document.removeEventListener('keypress', this.handleEnterKeyPress)
-  }
-
   componentDidUpdate (prevProps) {
     const { show, film } = this.props
 
@@ -117,7 +108,6 @@ class FilmFormDialog extends Component {
         onError={this.mutations[action].onErrorFn.bind(this)}
       >
         {(mutationFn, { data, loading, error }) => {
-          this.mutationFn = mutationFn
           return (
             <Dialog
               open={show}
@@ -129,7 +119,7 @@ class FilmFormDialog extends Component {
                 action={action}
                 film={film}
                 onChange={film => this.handleChange(film)}
-                onConfirm={film => this.handleConfirm()}
+                onConfirm={film => this.handleConfirm(mutationFn)}
                 onClose={() => this.handleClose()}
               />
             </Dialog>
@@ -143,21 +133,10 @@ class FilmFormDialog extends Component {
     this.setState({ film })
   }
 
-  handleEnterKeyPress (e) {
-    const { key } = e
-    const { name, parentList } = this.state.film
-    const { show } = this.props
-    const disabled = !name || !parentList
-
-    if (!show || disabled || key !== 'Enter') return
-
-    this.handleConfirm()
-  }
-
-  handleConfirm () {
+  handleConfirm (mutationFn) {
     const { action } = this.props
 
-    this.mutationFn({
+    mutationFn({
       variables: this.mutations[action].getVariables.bind(this)()
     })
 

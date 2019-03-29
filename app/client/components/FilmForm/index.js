@@ -15,6 +15,7 @@ import Switch from '@material-ui/core/Switch'
 import lists from '../../lib/lists'
 
 const actions = ['setFilmAction']
+const FORM_ID = 'film-form'
 
 const styles = theme => ({
   imdbIdTextField: {
@@ -24,16 +25,25 @@ const styles = theme => ({
 
 class FilmFormDialog extends Component {
   render () {
-    const { action } = this.props
+    const { action, film, onConfirm } = this.props
     return (
       <Fragment>
         <DialogTitle>{capitalize(action)} film</DialogTitle>
         <DialogContent>
-          {this.renderNameInput()}
-          {this.renderListPicker()}
-          {this.renderAttributePicker()}
-          {this.renderImdbIdInput()}
-          {this.renderActions()}
+          <form
+            id={FORM_ID}
+            onSubmit={e => {
+              console.log('calling on submit from form')
+              e.preventDefault()
+              onConfirm(film)
+            }}
+          >
+            {this.renderNameInput()}
+            {this.renderListPicker()}
+            {this.renderAttributePicker()}
+            {this.renderImdbIdInput()}
+            {this.renderActions()}
+          </form>
         </DialogContent>
       </Fragment>
     )
@@ -141,7 +151,7 @@ class FilmFormDialog extends Component {
   }
 
   renderActions (createFilm) {
-    const { film, action, onConfirm, onClose } = this.props
+    const { film, action, onClose } = this.props
     const disabled = !film.name || !film.parentList
 
     return (
@@ -153,9 +163,10 @@ class FilmFormDialog extends Component {
           Cancel
         </Button>
         <Button
-          onClick={() => onConfirm(film)}
           color='primary'
           disabled={disabled}
+          type='submit'
+          form={FORM_ID}
         >
           {capitalize(action)} film
         </Button>
