@@ -11,6 +11,7 @@ type Film {
   isEnglishLanguage: Boolean!
   isClareFriendly: Boolean
   parentList: LIST!
+  imdbId: String
 }
 
 input CreateFilmInput {
@@ -19,6 +20,7 @@ input CreateFilmInput {
   isEnglishLanguage: Boolean!
   isClareFriendly: Boolean!
   parentList: LIST!
+  imdbId: String
 }
 
 input UpdateFilmInput {
@@ -28,6 +30,7 @@ input UpdateFilmInput {
   isEnglishLanguage: Boolean
   isClareFriendly: Boolean
   parentList: LIST
+  imdbId: String
 }
 
 type Query {

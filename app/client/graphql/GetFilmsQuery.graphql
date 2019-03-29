@@ -7,5 +7,6 @@ query GetFilmsQuery {
     isFiction
     isClareFriendly
     parentList
+    imdbId
   }
 }

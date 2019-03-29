@@ -3,6 +3,7 @@
 import React, { Component, Fragment } from 'react'
 import { Mutation } from 'react-apollo'
 import { connect } from 'tiny-atom/react'
+import { withStyles } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -15,12 +16,19 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew'
 import FaceIcon from '@material-ui/icons/Face'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Link from '@material-ui/core/Link'
 
 import lists from '../../lib/lists'
 import DeleteFilmMutation from '../../graphql/DeleteFilmMutation.graphql'
 import GetFilmsQuery from '../../graphql/GetFilmsQuery.graphql'
 
 const actions = ['showFilmForm', 'showSnackbar']
+
+const styles = theme => ({
+  clareFriendlyChip: {
+    marginRight: theme.spacing.unit
+  }
+})
 
 class Film extends Component {
   constructor () {
@@ -30,12 +38,24 @@ class Film extends Component {
 
   render () {
     const { film } = this.props
+    const { name, imdbId } = film
     const descriptor = this.getDescriptor()
+    const filmName = imdbId
+      ? (
+        <Link
+          href={`https://www.imdb.com/title/${imdbId}/`}
+          target='_blank'
+          rel='noopener'
+        >
+          {film.name}
+        </Link>
+      )
+      : name
 
     return (
       <ListItem divider>
         <ListItemText
-          primary={film.name}
+          primary={filmName}
           secondary={descriptor}
         />
         {this.renderClareFriendlyChip()}
@@ -46,7 +66,7 @@ class Film extends Component {
   }
 
   renderClareFriendlyChip () {
-    const { film } = this.props
+    const { film, classes } = this.props
     if (!film.isClareFriendly || lists.isWishList(film)) return null
 
     return (
@@ -55,6 +75,7 @@ class Film extends Component {
         color='primary'
         icon={<FaceIcon />}
         variant='outlined'
+        className={classes.clareFriendlyChip}
       />
     )
   }
@@ -202,4 +223,6 @@ class Film extends Component {
   }
 }
 
-export default connect(null, actions)(Film)
+export default withStyles(styles)(
+  connect(null, actions)(Film)
+)

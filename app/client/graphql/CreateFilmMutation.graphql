@@ -7,5 +7,6 @@ mutation CreateFilm ($input: CreateFilmInput!) {
     isFiction
     isClareFriendly
     parentList
+    imdbId
   }
 }

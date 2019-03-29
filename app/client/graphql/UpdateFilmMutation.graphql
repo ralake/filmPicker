@@ -7,5 +7,6 @@ mutation UpdateFilm ($id: ID!, $input: UpdateFilmInput!) {
     isFiction
     isClareFriendly
     parentList
+    imdbId
   }
 }
