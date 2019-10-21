@@ -11,7 +11,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import TheatersIcon from '@material-ui/icons/Theaters'
 import { withStyles } from '@material-ui/core/styles'
 
-import pickFilms from '../../lib/pickFilms'
+import pickFilm from '../../lib/pickFilm'
 import lists from '../../lib/lists'
 import user from '../../lib/user'
 
@@ -89,7 +89,7 @@ class Header extends Component {
   pickFilms () {
     const { films: allFilms, showSnackbar } = this.props
     const films = allFilms.filter(film => lists.isWatchList(film))
-    const { oldestFilm, randomFilm } = pickFilms(films)
+    const randomFilm = pickFilm(films)
 
     const Film = (name) => (
       <Typography
@@ -103,7 +103,7 @@ class Header extends Component {
 
     showSnackbar({
       show: true,
-      message: <span>Watch {Film(randomFilm.name)} or {Film(oldestFilm.name)}</span>,
+      message: <span>Watch {Film(randomFilm.name)}</span>,
       type: 'info',
       duration: 5000
     })

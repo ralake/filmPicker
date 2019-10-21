@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'tiny-atom/react'
-import sortBy from 'lodash-es/sortBy'
 import capitalize from 'lodash-es/capitalize'
 import get from 'lodash-es/get'
 import { Query } from 'react-apollo'
@@ -33,7 +32,7 @@ class FilmPicker extends Component {
           onError={() => this.handleError()}
         >
           {({ loading, data, error }) => {
-            const films = get(data, 'films')
+            const films = get(data, 'films', [])
 
             return (
               <Fragment>
@@ -45,10 +44,12 @@ class FilmPicker extends Component {
                   <FilmList
                     title={capitalize(lists.toDisplayName(lists.WATCH_LIST))}
                     films={this.getFilms(films, lists.WATCH_LIST)}
+                    initialOrder='dateAdded'
                   />
                   <FilmList
                     title={capitalize(lists.toDisplayName(lists.WISH_LIST))}
                     films={this.getFilms(films, lists.WISH_LIST)}
+                    initialOrder='name'
                   />
                 </Grid>
               </Fragment>
@@ -61,10 +62,7 @@ class FilmPicker extends Component {
 
   getFilms (films, list) {
     if (!films) return
-    return sortBy(
-      films.filter(film => film.parentList === list),
-      'name'
-    )
+    return films.filter(film => film.parentList === list)
   }
 
   handleError () {
