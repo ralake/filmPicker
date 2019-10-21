@@ -10,7 +10,7 @@
     "start": "node app/server"
   },
   "engines": {
-    "node": "8.x.x"
+    "node": "10.x.x"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
