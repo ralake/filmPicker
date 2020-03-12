@@ -18,7 +18,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      HD_DOWNLOAD_URL: JSON.stringify(config.get('downloadUrl')),
+      DOWNLOAD_SOURCES: JSON.stringify(config.get('downloadSources')),
       FIREBASE_API_KEY: JSON.stringify(config.get('firebase.apiKey'))
     })
   ],

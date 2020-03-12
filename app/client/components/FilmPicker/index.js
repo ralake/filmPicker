@@ -3,8 +3,7 @@ import { connect } from 'tiny-atom/react'
 import capitalize from 'lodash-es/capitalize'
 import get from 'lodash-es/get'
 import { Query } from 'react-apollo'
-import Grid from '@material-ui/core/Grid'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles'
 import blue from '@material-ui/core/colors/blue'
 
 import lists from '../../lib/lists'
@@ -23,6 +22,14 @@ const theme = createMuiTheme({
 
 const actions = ['showSnackbar']
 
+const styles = theme => ({
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: '0.8fr 1fr',
+    gridGap: 12
+  }
+})
+
 class FilmPicker extends Component {
   render () {
     return (
@@ -40,7 +47,7 @@ class FilmPicker extends Component {
                 <Snackbar />
                 <FilmFormDialog />
                 <LoginFormDialog />
-                <Grid container spacing={24}>
+                <div className={this.props.classes.grid}>
                   <FilmList
                     title={capitalize(lists.toDisplayName(lists.WATCH_LIST))}
                     films={this.getFilms(films, lists.WATCH_LIST)}
@@ -51,7 +58,7 @@ class FilmPicker extends Component {
                     films={this.getFilms(films, lists.WISH_LIST)}
                     initialOrder='name'
                   />
-                </Grid>
+                </div>
               </Fragment>
             )
           }}
@@ -75,4 +82,4 @@ class FilmPicker extends Component {
   }
 }
 
-export default connect(null, actions)(FilmPicker)
+export default connect(null, actions)(withStyles(styles)(FilmPicker))

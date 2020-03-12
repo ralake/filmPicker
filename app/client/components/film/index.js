@@ -1,4 +1,4 @@
-/* globals HD_DOWNLOAD_URL */
+/* globals DOWNLOAD_SOURCES */
 
 import React, { Component, Fragment } from 'react'
 import { Mutation } from 'react-apollo'
@@ -12,10 +12,11 @@ import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import CreateIcon from '@material-ui/icons/Create'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import OpenInNewIcon from '@material-ui/icons/OpenInNew'
 import FaceIcon from '@material-ui/icons/Face'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Link from '@material-ui/core/Link'
 
 import lists from '../../lib/lists'
@@ -58,16 +59,38 @@ class Film extends Component {
           primary={filmName}
           secondary={descriptor}
         />
-        {this.renderClareFriendlyChip()}
-        {this.renderDownloadButton()}
+        {lists.isWatchList(film) && film.isClareFriendly && this.renderClareFriendlyChip()}
+        {lists.isWishList(film) && this.renderDownloadLinks(film.name)}
         {this.renderMenu()}
       </ListItem>
     )
   }
 
+  renderDownloadLinks (filmName) {
+    return (
+      <ButtonGroup variant='text' color='primary'>
+        {
+          DOWNLOAD_SOURCES.map(source => {
+            const query = source.separator
+              ? filmName.trim().replace(/\s/g, '+')
+              : window.encodeURIComponent(filmName)
+            const href = source.url.replace('{{film}}', query)
+            return (
+              <Button
+                target='_blank'
+                href={href}
+              >
+                {source.name}
+              </Button>
+            )
+          })
+        }
+      </ButtonGroup>
+    )
+  }
+
   renderClareFriendlyChip () {
-    const { film, classes } = this.props
-    if (!film.isClareFriendly || lists.isWishList(film)) return null
+    const { classes } = this.props
 
     return (
       <Chip
@@ -77,17 +100,6 @@ class Film extends Component {
         variant='outlined'
         className={classes.clareFriendlyChip}
       />
-    )
-  }
-
-  renderDownloadButton () {
-    const { film } = this.props
-    if (lists.isWatchList(film)) return null
-
-    return (
-      <IconButton onClick={() => this.search()}>
-        <OpenInNewIcon />
-      </IconButton>
     )
   }
 
@@ -116,12 +128,6 @@ class Film extends Component {
     } language ${
       isFiction ? 'fiction' : 'documentary'
     }${dateAdded !== 'Invalid Date' ? ` - Added ${dateAdded}` : ''}`
-  }
-
-  search () {
-    const film = window.encodeURIComponent(this.props.film.name)
-    const url = HD_DOWNLOAD_URL.replace('{{film}}', film)
-    window.open(url, '_blank')
   }
 
   renderMenuItems () {

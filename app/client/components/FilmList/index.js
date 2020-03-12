@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'tiny-atom/react'
 import { orderBy } from 'lodash-es'
-import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -41,29 +40,27 @@ function FilmList (props) {
   ).map(f => ({ ...f, dateAdded: f.dateAdded.toDateString() }))
 
   return (
-    <Grid item xs>
-      <Paper className={classes.paper}>
-        <List
-          disablePadding
-          subheader={(
-            <div className={classes.subheader}>
-              <ListSubheader>{title} ({films.length} films)</ListSubheader>
-              <Select
-                className={classes.select}
-                value={order}
-                onChange={e => setOrder(e.target.value)}
-                inputProps={{ name: 'order', id: 'film-order' }}
-              >
-                <MenuItem value='dateAdded'>Date added</MenuItem>
-                <MenuItem value='name'>Name</MenuItem>
-              </Select>
-            </div>
-          )}
-        >
-          {orderedFilms.map(film => <Film film={film} />)}
-        </List>
-      </Paper>
-    </Grid>
+    <Paper className={classes.paper}>
+      <List
+        disablePadding
+        subheader={(
+          <div className={classes.subheader}>
+            <ListSubheader>{title} ({films.length} films)</ListSubheader>
+            <Select
+              className={classes.select}
+              value={order}
+              onChange={e => setOrder(e.target.value)}
+              inputProps={{ name: 'order', id: 'film-order' }}
+            >
+              <MenuItem value='dateAdded'>Date added</MenuItem>
+              <MenuItem value='name'>Name</MenuItem>
+            </Select>
+          </div>
+        )}
+      >
+        {orderedFilms.map(film => <Film film={film} />)}
+      </List>
+    </Paper>
   )
 }
 
