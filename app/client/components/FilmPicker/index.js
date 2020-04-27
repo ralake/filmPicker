@@ -25,7 +25,7 @@ const actions = ['showSnackbar']
 const styles = theme => ({
   grid: {
     display: 'grid',
-    gridTemplateColumns: '0.8fr 1fr',
+    gridTemplateColumns: '0.7fr 1fr',
     gridGap: 12
   }
 })
