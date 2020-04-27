@@ -96,7 +96,7 @@ class Film extends Component {
       <Chip
         color='primary'
         icon={<FaceIcon />}
-        variant='outlined'
+        label='Clare friendly'
         className={classes.clareFriendlyChip}
       />
     )
