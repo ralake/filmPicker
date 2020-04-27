@@ -74,7 +74,7 @@ class Film extends Component {
             const query = source.separator
               ? filmName.trim().replace(/\s/g, '+')
               : window.encodeURIComponent(filmName)
-            const href = source.url.replace('{{film}}', query)
+            const href = source.url.replace('{{film}}', `"${query}"`)
             return (
               <Button
                 target='_blank'
